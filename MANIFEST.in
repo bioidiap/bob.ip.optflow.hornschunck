@@ -1,0 +1,3 @@
+include README.rst buildout.cfg bootstrap.py
+recursive-include xbob *.cpp *.h
+recursive-include doc *.rst *.py
