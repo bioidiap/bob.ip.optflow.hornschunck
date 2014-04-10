@@ -18,22 +18,88 @@
  * Implementation of Flow base class *
  *************************************/
 
-#define CLASS_NAME "Flow"
+#define CLASS_NAME "VanillaFlow"
 
 static auto s_flow = xbob::extension::ClassDoc(
     XBOB_EXT_MODULE_PREFIX "." CLASS_NAME,
 
     "Estimates the Optical Flow between images.",
 
-    "This is a clone of the Vanilla Horn & Schunck method that uses a Sobel "
-    "gradient estimator instead of the forward estimator used by the "
-    "classical method. The Laplacian operator is also replaced with a more "
-    "common implementation. The Sobel filter requires 3 images for the "
-    "gradient estimation. Therefore, this implementation inputs 3 image sets "
-    "instead of just 2. The flow is calculated w.r.t. **central** image.\n"
+    "Estimates the Optical Flow between two sequences of images (``image1``, "
+    "the starting image and ``image2``, the final image). It does this using "
+    "the iterative method described by Horn & Schunck in the paper titled "
+    "\"Determining Optical Flow\", published in 1981, Artificial "
+    "Intelligence, Vol. 17, No. 1-3, pp. 185-203.\n"
     "\n"
-    "For more details on the general technique from Horn & Schunck, see the "
-    "module's documentation."
+    "The method constrains the calculation with two assertions that can be "
+    "made on a natural sequence of images:\n"
+    "\n"
+    "1. For the same lighting conditions, the brightness (:math:`E`) of the "
+    "shapes in an image do not change and, therefore, the derivative of E "
+    "w.r.t. time (:math:`\\frac{dE}{dt}`) equals zero.\n"
+    "\n"
+    "2. The relative velocities of adjancent points in an image varies "
+    "smoothly. The smothness constraint is applied on the image data using "
+    "the Laplacian operator.\n"
+    "\n"
+    "It then approximates the calculation of conditions 1 and 2 above using "
+    "a Taylor series expansion and ignoring terms with order greater or "
+    "equal 2. This technique is also know as \"Finite Differences\" and is "
+    "applied in other engineering fields such as Fluid Mechanics.\n"
+    "\n"
+    "The problem is finally posed as an iterative process that simultaneously"
+    "minimizes conditions 1 and 2 above. A weighting factor (:math:`\\alpha` "
+    "- also sometimes referred as :math:`\\lambda` in some implementations) "
+    "controls the relative importance of the two above conditions. The higher "
+    "it gets, the smoother the field will be.\n"
+    "\n"
+    ".. note::\n"
+    "   \n"
+    "   OpenCV also has an implementation for H&S optical flow. "
+    "It sets :math:`\\lambda = \\alpha^2`\n"
+    "\n"
+    "This is the set of equations that are implemented:\n"
+    "\n"
+    ".. math::\n"
+    "   \n"
+    "   u(n+1) = U(n) - E_x[E_x * U(n) + E_y * V(n) + E_t] /\n"
+    "                                          (\\alpha^2 + E_x^2 + E_y^2)\n"
+    "   v(n+1) = V(n) - E_y[E_y * U(n) + E_y * V(n) + E_t] /\n"
+    "                                          (\\alpha^2 + E_x^2 + E_y^2)\n"
+    "\n"
+    "Where:\n"
+    "\n"
+    ":math:`u(\\cdot)`\n"
+    "  is the relative velocity in the :math:`x` direction\n"
+    "\n"
+    ":math:`v(\\cdot)`\n"
+    "  is the relative velocity in the :math:`y` direction\n"
+    "\n"
+    ":math:`E_x`, :math:`E_y` and :math:`E_t`\n"
+    "  are partial derivatives of brightness in the :math:`x`, :math:`y` "
+    "and :math:`t` directions, estimated using finite differences based "
+    "on the input images, ``i1`` and ``i2``\n"
+    "\n"
+    ":math:`U(\\cdot)`\n"
+    "  laplacian estimates for x given equations in Section 8 of the paper\n"
+    "\n"
+    ":math:`V(\\cdot)`\n"
+    "  laplacian estimates for y given equations in Section 8 of the paper\n"
+    "\n"
+    "According to paper, :math:`\\alpha^2` should be more or less set to "
+    "noise in estimating :math:`E_x^2 + E_y^2`. In practice, many algorithms "
+    "consider values around 200 a good default. The higher this number is, "
+    "the more importance on smoothing you will be putting.\n"
+    "\n"
+    "The initial conditions are set such that :math:`u(0) = v(0) = 0`, "
+    "except in the case where you provide them. For example, if you are "
+    "analyzing a video stream, it is a good idea to use the previous "
+    "estimate as the initial conditions.\n"
+    "\n"
+    ".. note::\n"
+    "   \n"
+    "   This is a dense flow estimator. The optical flow is computed for all "
+    "pixels in the image.\n"
     )
     .add_constructor(
         xbob::extension::FunctionDoc(
@@ -48,12 +114,12 @@ static auto s_flow = xbob::extension::ClassDoc(
 
 typedef struct {
   PyObject_HEAD
-  bob::ip::optflow::HornAndSchunckFlow* cxx;
-} PyBobIpOptflowHornAndSchunckObject;
+  bob::ip::optflow::VanillaHornAndSchunckFlow* cxx;
+} PyBobIpOptflowVanillaHornAndSchunckObject;
 
 
-static int PyBobIpOptflowHornAndSchunck_init
-(PyBobIpOptflowHornAndSchunckObject* self, PyObject* args, PyObject* kwds) {
+static int PyBobIpOptflowVanillaHornAndSchunck_init
+(PyBobIpOptflowVanillaHornAndSchunckObject* self, PyObject* args, PyObject* kwds) {
 
   /* Parses input arguments in a single shot */
   static const char* const_kwlist[] = {"shape", 0};
@@ -67,7 +133,7 @@ static int PyBobIpOptflowHornAndSchunck_init
   try {
     blitz::TinyVector<int,2> shape;
     shape(0) = height; shape(1) = width;
-    self->cxx = new bob::ip::optflow::HornAndSchunckFlow(shape);
+    self->cxx = new bob::ip::optflow::VanillaHornAndSchunckFlow(shape);
   }
   catch (std::exception& ex) {
     PyErr_SetString(PyExc_RuntimeError, ex.what());
@@ -82,8 +148,8 @@ static int PyBobIpOptflowHornAndSchunck_init
 
 }
 
-static void PyBobIpOptflowHornAndSchunck_delete
-(PyBobIpOptflowHornAndSchunckObject* self) {
+static void PyBobIpOptflowVanillaHornAndSchunck_delete
+(PyBobIpOptflowVanillaHornAndSchunckObject* self) {
 
   delete self->cxx;
   Py_TYPE(self)->tp_free((PyObject*)self);
@@ -96,13 +162,13 @@ static auto s_shape = xbob::extension::VariableDoc(
     "The shape pre-configured for this flow estimator: ``(height, width)``"
     );
 
-static PyObject* PyBobIpOptflowHornAndSchunck_getShape
-(PyBobIpOptflowHornAndSchunckObject* self, void* /*closure*/) {
+static PyObject* PyBobIpOptflowVanillaHornAndSchunck_getShape
+(PyBobIpOptflowVanillaHornAndSchunckObject* self, void* /*closure*/) {
   auto shape = self->cxx->getShape();
   return Py_BuildValue("nn", shape(0), shape(1));
 }
 
-static int PyBobIpOptflowHornAndSchunck_setShape (PyBobIpOptflowHornAndSchunckObject* self, PyObject* o, void* /*closure*/) {
+static int PyBobIpOptflowVanillaHornAndSchunck_setShape (PyBobIpOptflowVanillaHornAndSchunckObject* self, PyObject* o, void* /*closure*/) {
 
   Py_ssize_t height = 0;
   Py_ssize_t width = 0;
@@ -127,11 +193,11 @@ static int PyBobIpOptflowHornAndSchunck_setShape (PyBobIpOptflowHornAndSchunckOb
 
 }
 
-static PyGetSetDef PyBobIpOptflowHornAndSchunck_getseters[] = {
+static PyGetSetDef PyBobIpOptflowVanillaHornAndSchunck_getseters[] = {
     {
       s_shape.name(),
-      (getter)PyBobIpOptflowHornAndSchunck_getShape,
-      (setter)PyBobIpOptflowHornAndSchunck_setShape,
+      (getter)PyBobIpOptflowVanillaHornAndSchunck_getShape,
+      (setter)PyBobIpOptflowVanillaHornAndSchunck_setShape,
       s_shape.doc(),
       0
     },
@@ -144,7 +210,7 @@ static PyGetSetDef PyBobIpOptflowHornAndSchunck_getseters[] = {
 #  define PYOBJECT_STR PyObject_Unicode
 #endif
 
-PyObject* PyBobIpOptflowHornAndSchunck_Repr(PyBobIpOptflowHornAndSchunckObject* self) {
+PyObject* PyBobIpOptflowVanillaHornAndSchunck_Repr(PyBobIpOptflowVanillaHornAndSchunckObject* self) {
 
   /**
    * Expected output:
@@ -152,7 +218,7 @@ PyObject* PyBobIpOptflowHornAndSchunck_Repr(PyBobIpOptflowHornAndSchunckObject* 
    * <xbob.ip.optflow.hornschunck.Flow((3, 2))>
    */
 
-  auto shape = make_safe(PyBobIpOptflowHornAndSchunck_getShape(self, 0));
+  auto shape = make_safe(PyBobIpOptflowVanillaHornAndSchunck_getShape(self, 0));
   if (!shape) return 0;
   auto shape_str = make_safe(PyObject_Str(shape.get()));
 
@@ -164,30 +230,28 @@ PyObject* PyBobIpOptflowHornAndSchunck_Repr(PyBobIpOptflowHornAndSchunckObject* 
 static auto s_estimate = xbob::extension::FunctionDoc(
     "estimate",
     "Estimates the optical flow leading to ``image2``. This method will use "
-    "leading image ``image1`` and the after image ``image3``, to estimate "
-    "the optical flow leading to ``image2``. All input images should be 2D "
-    "64-bit float arrays with the shape ``(height, width)`` as specified in "
-    "the construction of the object."
+    "the leading image ``image1``, to estimate the optical flow leading to "
+    "``image2``. All input images should be 2D 64-bit float arrays with the "
+    "shape ``(height, width)`` as specified in the construction of the object."
     )
-    .add_prototype("alpha, iterations, image1, image2, image3, [u, v]", "u, v")
+    .add_prototype("alpha, iterations, image1, image2, [u, v]", "u, v")
     .add_parameter("alpha", "float", "The weighting factor between brightness constness and the field smoothness. According to original paper, :math:`\\alpha^2` should be more or less set to noise in estimating :math:`E_x^2 + E_y^2`. In practice, many algorithms consider values around 200 a good default. The higher this number is, the more importance on smoothing you will be putting.")
     .add_parameter("iterations", "int", "Number of iterations for which to minimize the flow error")
-    .add_parameter("image1, image2, image3", "array-like (2D, float64)",
+    .add_parameter("image1, image2", "array-like (2D, float64)",
       "Sequence of images to estimate the flow from")
-    .add_parameter("u, v", "array (2D, float64)", "The estimated flows in the horizontal and vertical directions (respectively) will be output in these variables, which should have dimensions matching those of ``image1``, ``image2`` and ``image3``. If you don't provide arrays for ``u`` and ``v``, then they will be allocated internally and returned. If must either provide neither ``u`` and ``v`` or both, otherwise an exception will be raised. Notice that, if you provide ``u`` and ``v`` which are non-zero, they will be taken as initial values for the error minimization. These arrays will be updated with the final value of the flow leading to ``image2``.")
+    .add_parameter("u, v", "array (2D, float64)", "The estimated flows in the horizontal and vertical directions (respectively) will be output in these variables, which should have dimensions matching those of ``image1`` and ``image2``. If you don't provide arrays for ``u`` and ``v``, then they will be allocated internally and returned. If must either provide neither ``u`` and ``v`` or both, otherwise an exception will be raised. Notice that, if you provide ``u`` and ``v`` which are non-zero, they will be taken as initial values for the error minimization. These arrays will be updated with the final value of the flow leading to ``image2``.")
     .add_return("u, v", "array (2D, float)", "The estimated flows in the horizontal and vertical directions (respectively)."
     )
     ;
 
-static PyObject* PyBobIpOptflowHornAndSchunck_estimate
-(PyBobIpOptflowHornAndSchunckObject* self, PyObject* args, PyObject* kwds) {
+static PyObject* PyBobIpOptflowVanillaHornAndSchunck_estimate
+(PyBobIpOptflowVanillaHornAndSchunckObject* self, PyObject* args, PyObject* kwds) {
 
   static const char* const_kwlist[] = {
     "alpha",
     "iterations",
     "image1",
     "image2",
-    "image3",
     "u",
     "v",
     };
@@ -197,15 +261,13 @@ static PyObject* PyBobIpOptflowHornAndSchunck_estimate
   Py_ssize_t iterations;
   PyBlitzArrayObject* image1 = 0;
   PyBlitzArrayObject* image2 = 0;
-  PyBlitzArrayObject* image3 = 0;
   PyBlitzArrayObject* u = 0;
   PyBlitzArrayObject* v = 0;
 
-  if (!PyArg_ParseTupleAndKeywords(args, kwds, "dnO&O&O&|O&O&", kwlist,
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "dnO&O&|O&O&", kwlist,
         &alpha, &iterations,
         &PyBlitzArray_Converter, &image1,
         &PyBlitzArray_Converter, &image2,
-        &PyBlitzArray_Converter, &image3,
         &PyBlitzArray_OutputConverter, &u,
         &PyBlitzArray_OutputConverter, &v
         )) return 0;
@@ -213,7 +275,6 @@ static PyObject* PyBobIpOptflowHornAndSchunck_estimate
   //protects acquired resources through this scope
   auto image1_ = make_safe(image1);
   auto image2_ = make_safe(image2);
-  auto image3_ = make_safe(image3);
   auto u_ = make_xsafe(u);
   auto v_ = make_xsafe(v);
 
@@ -224,11 +285,6 @@ static PyObject* PyBobIpOptflowHornAndSchunck_estimate
 
   if (image2->type_num != NPY_FLOAT64 || image2->ndim != 2) {
     PyErr_Format(PyExc_TypeError, "`%s' only supports 2D 64-bit float arrays for input array `image2'", Py_TYPE(self)->tp_name);
-    return 0;
-  }
-
-  if (image3->type_num != NPY_FLOAT64 || image3->ndim != 2) {
-    PyErr_Format(PyExc_TypeError, "`%s' only supports 2D 64-bit float arrays for input array `image3'", Py_TYPE(self)->tp_name);
     return 0;
   }
 
@@ -243,11 +299,6 @@ static PyObject* PyBobIpOptflowHornAndSchunck_estimate
 
   if (image2->shape[0] != height || image2->shape[1] != width) {
     PyErr_Format(PyExc_RuntimeError, "`%s' only supports arrays with shape (%" PY_FORMAT_SIZE_T "d, %" PY_FORMAT_SIZE_T "d) for input array `image2', but `image2''s shape is (%" PY_FORMAT_SIZE_T "d, %" PY_FORMAT_SIZE_T "d)", Py_TYPE(self)->tp_name, height, width, image2->shape[0], image2->shape[1]);
-    return 0;
-  }
-
-  if (image3->shape[0] != height || image3->shape[1] != width) {
-    PyErr_Format(PyExc_RuntimeError, "`%s' only supports arrays with shape (%" PY_FORMAT_SIZE_T "d, %" PY_FORMAT_SIZE_T "d) for input array `image3', but `image3''s shape is (%" PY_FORMAT_SIZE_T "d, %" PY_FORMAT_SIZE_T "d)", Py_TYPE(self)->tp_name, height, width, image3->shape[0], image3->shape[1]);
     return 0;
   }
 
@@ -305,7 +356,6 @@ static PyObject* PyBobIpOptflowHornAndSchunck_estimate
     self->cxx->operator()(alpha, iterations,
         *PyBlitzArrayCxx_AsBlitz<double,2>(image1),
         *PyBlitzArrayCxx_AsBlitz<double,2>(image2),
-        *PyBlitzArrayCxx_AsBlitz<double,2>(image3),
         *PyBlitzArrayCxx_AsBlitz<double,2>(u),
         *PyBlitzArrayCxx_AsBlitz<double,2>(v)
         );
@@ -336,8 +386,8 @@ static auto s_eval_ec2 = xbob::extension::FunctionDoc(
     )
     ;
 
-static PyObject* PyBobIpOptflowHornAndSchunck_eval_ec2
-(PyBobIpOptflowHornAndSchunckObject* self, PyObject* args, PyObject* kwds) {
+static PyObject* PyBobIpOptflowVanillaHornAndSchunck_eval_ec2
+(PyBobIpOptflowVanillaHornAndSchunckObject* self, PyObject* args, PyObject* kwds) {
 
   static const char* const_kwlist[] = {
     "u",
@@ -411,21 +461,20 @@ static auto s_eval_eb = xbob::extension::FunctionDoc(
     "eval_eb",
     "Calculates the brightness error (:math:`E_b`) as defined in the paper: :math:`E_b = (E_x u + E_y v + E_t)"
     )
-    .add_prototype("image1, image2, image3, u, v")
-    .add_parameter("image1, image2, image3", "array-like (2D, float64)",
+    .add_prototype("image1, image2, u, v")
+    .add_parameter("image1, image2", "array-like (2D, float64)",
       "Sequence of images the flow was estimated with")
-    .add_parameter("u, v", "array-like (2D, float64)", "The estimated flows in the horizontal and vertical directions (respectively), which should have dimensions matching those of ``image1``, ``image2`` and ``image3``.")
+    .add_parameter("u, v", "array-like (2D, float64)", "The estimated flows in the horizontal and vertical directions (respectively), which should have dimensions matching those of ``image1`` and ``image2``.")
     .add_return("error", "array (2D, float)", "The evaluated brightness error."
     )
     ;
 
-static PyObject* PyBobIpOptflowHornAndSchunck_eval_eb
-(PyBobIpOptflowHornAndSchunckObject* self, PyObject* args, PyObject* kwds) {
+static PyObject* PyBobIpOptflowVanillaHornAndSchunck_eval_eb
+(PyBobIpOptflowVanillaHornAndSchunckObject* self, PyObject* args, PyObject* kwds) {
 
   static const char* const_kwlist[] = {
     "image1",
     "image2",
-    "image3",
     "u",
     "v",
     };
@@ -435,15 +484,13 @@ static PyObject* PyBobIpOptflowHornAndSchunck_eval_eb
   Py_ssize_t iterations;
   PyBlitzArrayObject* image1 = 0;
   PyBlitzArrayObject* image2 = 0;
-  PyBlitzArrayObject* image3 = 0;
   PyBlitzArrayObject* u = 0;
   PyBlitzArrayObject* v = 0;
 
-  if (!PyArg_ParseTupleAndKeywords(args, kwds, "O&O&O&O&O&", kwlist,
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "O&O&O&O&", kwlist,
         &alpha, &iterations,
         &PyBlitzArray_Converter, &image1,
         &PyBlitzArray_Converter, &image2,
-        &PyBlitzArray_Converter, &image3,
         &PyBlitzArray_Converter, &u,
         &PyBlitzArray_Converter, &v
         )) return 0;
@@ -451,7 +498,6 @@ static PyObject* PyBobIpOptflowHornAndSchunck_eval_eb
   //protects acquired resources through this scope
   auto image1_ = make_safe(image1);
   auto image2_ = make_safe(image2);
-  auto image3_ = make_safe(image3);
   auto u_ = make_safe(u);
   auto v_ = make_safe(v);
 
@@ -462,11 +508,6 @@ static PyObject* PyBobIpOptflowHornAndSchunck_eval_eb
 
   if (image2->type_num != NPY_FLOAT64 || image2->ndim != 2) {
     PyErr_Format(PyExc_TypeError, "`%s' only supports 2D 64-bit float arrays for input array `image2'", Py_TYPE(self)->tp_name);
-    return 0;
-  }
-
-  if (image3->type_num != NPY_FLOAT64 || image3->ndim != 2) {
-    PyErr_Format(PyExc_TypeError, "`%s' only supports 2D 64-bit float arrays for input array `image3'", Py_TYPE(self)->tp_name);
     return 0;
   }
 
@@ -481,11 +522,6 @@ static PyObject* PyBobIpOptflowHornAndSchunck_eval_eb
 
   if (image2->shape[0] != height || image2->shape[1] != width) {
     PyErr_Format(PyExc_RuntimeError, "`%s' only supports arrays with shape (%" PY_FORMAT_SIZE_T "d, %" PY_FORMAT_SIZE_T "d) for input array `image2', but `image2''s shape is (%" PY_FORMAT_SIZE_T "d, %" PY_FORMAT_SIZE_T "d)", Py_TYPE(self)->tp_name, height, width, image2->shape[0], image2->shape[1]);
-    return 0;
-  }
-
-  if (image3->shape[0] != height || image3->shape[1] != width) {
-    PyErr_Format(PyExc_RuntimeError, "`%s' only supports arrays with shape (%" PY_FORMAT_SIZE_T "d, %" PY_FORMAT_SIZE_T "d) for input array `image3', but `image3''s shape is (%" PY_FORMAT_SIZE_T "d, %" PY_FORMAT_SIZE_T "d)", Py_TYPE(self)->tp_name, height, width, image3->shape[0], image3->shape[1]);
     return 0;
   }
 
@@ -519,7 +555,6 @@ static PyObject* PyBobIpOptflowHornAndSchunck_eval_eb
     self->cxx->evalEb(
         *PyBlitzArrayCxx_AsBlitz<double,2>(image1),
         *PyBlitzArrayCxx_AsBlitz<double,2>(image2),
-        *PyBlitzArrayCxx_AsBlitz<double,2>(image3),
         *PyBlitzArrayCxx_AsBlitz<double,2>(u),
         *PyBlitzArrayCxx_AsBlitz<double,2>(v),
         *PyBlitzArrayCxx_AsBlitz<double,2>(error)
@@ -539,34 +574,34 @@ static PyObject* PyBobIpOptflowHornAndSchunck_eval_eb
 
 }
 
-static PyMethodDef PyBobIpOptflowHornAndSchunck_methods[] = {
+static PyMethodDef PyBobIpOptflowVanillaHornAndSchunck_methods[] = {
   {
     s_estimate.name(),
-    (PyCFunction)PyBobIpOptflowHornAndSchunck_estimate,
+    (PyCFunction)PyBobIpOptflowVanillaHornAndSchunck_estimate,
     METH_VARARGS|METH_KEYWORDS,
     s_estimate.doc()
   },
   {
     s_eval_ec2.name(),
-    (PyCFunction)PyBobIpOptflowHornAndSchunck_eval_ec2,
+    (PyCFunction)PyBobIpOptflowVanillaHornAndSchunck_eval_ec2,
     METH_VARARGS|METH_KEYWORDS,
     s_eval_ec2.doc()
   },
   {
     s_eval_eb.name(),
-    (PyCFunction)PyBobIpOptflowHornAndSchunck_eval_eb,
+    (PyCFunction)PyBobIpOptflowVanillaHornAndSchunck_eval_eb,
     METH_VARARGS|METH_KEYWORDS,
     s_eval_eb.doc()
   },
   {0} /* Sentinel */
 };
 
-static PyObject* PyBobIpOptflowHornAndSchunck_new
+static PyObject* PyBobIpOptflowVanillaHornAndSchunck_new
 (PyTypeObject* type, PyObject*, PyObject*) {
 
   /* Allocates the python object itself */
-  PyBobIpOptflowHornAndSchunckObject* self =
-    (PyBobIpOptflowHornAndSchunckObject*)type->tp_alloc(type, 0);
+  PyBobIpOptflowVanillaHornAndSchunckObject* self =
+    (PyBobIpOptflowVanillaHornAndSchunckObject*)type->tp_alloc(type, 0);
 
   self->cxx = 0;
 
@@ -574,23 +609,23 @@ static PyObject* PyBobIpOptflowHornAndSchunck_new
 
 }
 
-PyTypeObject PyBobIpOptflowHornAndSchunck_Type = {
+PyTypeObject PyBobIpOptflowVanillaHornAndSchunck_Type = {
     PyVarObject_HEAD_INIT(0, 0)
     s_flow.name(),                                      /* tp_name */
-    sizeof(PyBobIpOptflowHornAndSchunckObject),         /* tp_basicsize */
+    sizeof(PyBobIpOptflowVanillaHornAndSchunckObject),  /* tp_basicsize */
     0,                                                  /* tp_itemsize */
-    (destructor)PyBobIpOptflowHornAndSchunck_delete,    /* tp_dealloc */
+    (destructor)PyBobIpOptflowVanillaHornAndSchunck_delete, /* tp_dealloc */
     0,                                                  /* tp_print */
     0,                                                  /* tp_getattr */
     0,                                                  /* tp_setattr */
     0,                                                  /* tp_compare */
-    (reprfunc)PyBobIpOptflowHornAndSchunck_Repr,        /* tp_repr */
+    (reprfunc)PyBobIpOptflowVanillaHornAndSchunck_Repr, /* tp_repr */
     0,                                                  /* tp_as_number */
     0,                                                  /* tp_as_sequence */
     0,                                                  /* tp_as_mapping */
     0,                                                  /* tp_hash */
-    (ternaryfunc)PyBobIpOptflowHornAndSchunck_estimate, /* tp_call */
-    (reprfunc)PyBobIpOptflowHornAndSchunck_Repr,        /* tp_str */
+    (ternaryfunc)PyBobIpOptflowVanillaHornAndSchunck_estimate, /* tp_call */
+    (reprfunc)PyBobIpOptflowVanillaHornAndSchunck_Repr, /* tp_str */
     0,                                                  /* tp_getattro */
     0,                                                  /* tp_setattro */
     0,                                                  /* tp_as_buffer */
@@ -602,15 +637,15 @@ PyTypeObject PyBobIpOptflowHornAndSchunck_Type = {
     0,                                                  /* tp_weaklistoffset */
     0,                                                  /* tp_iter */
     0,                                                  /* tp_iternext */
-    PyBobIpOptflowHornAndSchunck_methods,               /* tp_methods */
+    PyBobIpOptflowVanillaHornAndSchunck_methods,        /* tp_methods */
     0,                                                  /* tp_members */
-    PyBobIpOptflowHornAndSchunck_getseters,             /* tp_getset */
+    PyBobIpOptflowVanillaHornAndSchunck_getseters,      /* tp_getset */
     0,                                                  /* tp_base */
     0,                                                  /* tp_dict */
     0,                                                  /* tp_descr_get */
     0,                                                  /* tp_descr_set */
     0,                                                  /* tp_dictoffset */
-    (initproc)PyBobIpOptflowHornAndSchunck_init,        /* tp_init */
+    (initproc)PyBobIpOptflowVanillaHornAndSchunck_init, /* tp_init */
     0,                                                  /* tp_alloc */
-    PyBobIpOptflowHornAndSchunck_new,                   /* tp_new */
+    PyBobIpOptflowVanillaHornAndSchunck_new,            /* tp_new */
 };

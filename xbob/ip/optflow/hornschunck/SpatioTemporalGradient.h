@@ -13,7 +13,7 @@
 
 #include <blitz/array.h>
 
-namespace bob { namespace ip {
+namespace bob { namespace ip { namespace optflow {
 
   /**
    * This class computes the spatio-temporal gradient using a 2-term
@@ -340,6 +340,6 @@ namespace bob { namespace ip {
 
   };
 
-}}
+}}}
 
 #endif /* BOB_IP_SPATIOTEMPORALGRADIENT_H */

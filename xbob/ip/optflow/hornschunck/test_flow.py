@@ -15,9 +15,7 @@ import pkg_resources
 
 import xbob.io
 
-from . import VanillaHornAndSchunckFlow, \
-              HornAndSchunckGradient, \
-              laplacian_avg_hs
+from . import VanillaFlow, HornAndSchunckGradient, laplacian_avg_hs
 
 def F(f):
   """Returns the test file on the "data" subdirectory"""
@@ -46,7 +44,7 @@ def make_image_tripplet():
 
 def HornAndSchunckFlowPython(alpha, im1, im2, im3, u0, v0):
   """Calculates the H&S flow in pure python"""
-  grad = HornAndSchunckGradient(im1.shape)
+  grad = Gradient(im1.shape)
   ex, ey, et = grad(im1, im2)
   u = laplacian_avg_hs(u0)
   v = laplacian_avg_hs(v0)
@@ -84,7 +82,7 @@ def test_synthetic():
   v_cxx = numpy.zeros(i1.shape, 'float64')
   u_py  = numpy.zeros(i1.shape, 'float64')
   v_py  = numpy.zeros(i1.shape, 'float64')
-  flow  = VanillaHornAndSchunckFlow(i1.shape)
+  flow  = VanillaFlow(i1.shape)
   for i in range(N):
     flow(alpha, 1, i1, i2, u_cxx, v_cxx)
     u_py, v_py = HornAndSchunckFlowPython(alpha, i1, i2, i3, u_py, v_py)
@@ -121,7 +119,7 @@ def test_demo():
 
   u = numpy.zeros(i1.shape, 'float64')
   v = numpy.zeros(i1.shape, 'float64')
-  flow = VanillaHornAndSchunckFlow(i1.shape)
+  flow = VanillaFlow(i1.shape)
   for i in range(N):
     flow(alpha, 1, i1, i2, u, v)
     #array = (255.0*bob.ip.flowutils.flow2hsv(u,v)).astype('uint8')
@@ -167,7 +165,7 @@ def test_opencv():
 
   u_cxx = numpy.zeros(i1.shape, 'float64')
   v_cxx = numpy.zeros(i1.shape, 'float64')
-  flow = VanillaHornAndSchunckFlow(i1.shape)
+  flow = VanillaFlow(i1.shape)
   flow(alpha, N, i1, i2, u_cxx, v_cxx)
   se2 = flow.eval_ec2(u_cxx, v_cxx)
   be = flow.eval_eb(i1, i2, u_cxx, v_cxx)

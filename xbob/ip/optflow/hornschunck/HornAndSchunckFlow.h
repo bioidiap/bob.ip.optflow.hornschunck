@@ -131,10 +131,9 @@ namespace bob { namespace ip { namespace optflow {
       /**
        * Returns the current shape supported
        */
-      inline const blitz::TinyVector<int,2>&
-        getShape(const blitz::TinyVector<int,2>& shape) const {
-          return m_ex.shape();
-        }
+      inline const blitz::TinyVector<int,2>& getShape() const {
+        return m_ex.shape();
+      }
 
       /**
        * Re-shape internal buffers
@@ -172,7 +171,7 @@ namespace bob { namespace ip { namespace optflow {
 
     private: //representation
 
-      bob::ip::HornAndSchunckGradient m_gradient; ///< Gradient operator
+      bob::ip::optflow::HornAndSchunckGradient m_gradient; ///< Gradient operator
       mutable blitz::Array<double,2> m_ex; ///< Ex buffer
       mutable blitz::Array<double,2> m_ey; ///< Ey buffer
       mutable blitz::Array<double,2> m_et; ///< Et buffer
@@ -205,10 +204,9 @@ namespace bob { namespace ip { namespace optflow {
       /**
        * Returns the current shape supported
        */
-      inline const blitz::TinyVector<int,2>&
-        getShape(const blitz::TinyVector<int,2>& shape) const {
-          return m_ex.shape();
-        }
+      inline const blitz::TinyVector<int,2>& getShape() const {
+        return m_ex.shape();
+      }
 
       /**
        * Re-shape internal buffers
@@ -248,7 +246,7 @@ namespace bob { namespace ip { namespace optflow {
 
     private: //representation
 
-      bob::ip::SobelGradient m_gradient; ///< Gradient operator
+      bob::ip::optflow::SobelGradient m_gradient; ///< Gradient operator
       mutable blitz::Array<double,2> m_ex; ///< Ex buffer
       mutable blitz::Array<double,2> m_ey; ///< Ey buffer
       mutable blitz::Array<double,2> m_et; ///< Et buffer

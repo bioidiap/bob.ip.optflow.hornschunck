@@ -38,6 +38,7 @@ setup(
       'xbob.blitz',
       'xbob.io',
       'xbob.ip.color',
+      'scipy', #for testing
     ],
 
     ext_modules = [
@@ -47,8 +48,12 @@ setup(
           ],
         version = version,
         ),
-      Extension("xbob.ip.optflow._library",
+      Extension("xbob.ip.optflow.hornschunck._library",
         [
+          "xbob/ip/optflow/hornschunck/SpatioTemporalGradient.cpp",
+          "xbob/ip/optflow/hornschunck/HornAndSchunckFlow.cpp",
+          "xbob/ip/optflow/hornschunck/vanilla.cpp",
+          "xbob/ip/optflow/hornschunck/flow.cpp",
           "xbob/ip/optflow/hornschunck/main.cpp",
           ],
         version = version,
