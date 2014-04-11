@@ -174,7 +174,7 @@ static auto s_estimate = xbob::extension::FunctionDoc(
     .add_parameter("iterations", "int", "Number of iterations for which to minimize the flow error")
     .add_parameter("image1, image2, image3", "array-like (2D, float64)",
       "Sequence of images to estimate the flow from")
-    .add_parameter("u, v", "array (2D, float64)", "The estimated flows in the horizontal and vertical directions (respectively) will be output in these variables, which should have dimensions matching those of ``image1``, ``image2`` and ``image3``. If you don't provide arrays for ``u`` and ``v``, then they will be allocated internally and returned. If must either provide neither ``u`` and ``v`` or both, otherwise an exception will be raised. Notice that, if you provide ``u`` and ``v`` which are non-zero, they will be taken as initial values for the error minimization. These arrays will be updated with the final value of the flow leading to ``image2``.")
+    .add_parameter("u, v", "array (2D, float64)", "The estimated flows in the horizontal and vertical directions (respectively) will be output in these variables, which should have dimensions matching those of this functor. If you don't provide arrays for ``u`` and ``v``, then they will be allocated internally and returned. You must either provide neither ``u`` and ``v`` or both, otherwise an exception will be raised. Notice that, if you provide ``u`` and ``v`` which are non-zero, they will be taken as initial values for the error minimization. These arrays will be updated with the final value of the flow leading to ``image2``.")
     .add_return("u, v", "array (2D, float)", "The estimated flows in the horizontal and vertical directions (respectively)."
     )
     ;
@@ -414,7 +414,7 @@ static auto s_eval_eb = xbob::extension::FunctionDoc(
     .add_prototype("image1, image2, image3, u, v")
     .add_parameter("image1, image2, image3", "array-like (2D, float64)",
       "Sequence of images the flow was estimated with")
-    .add_parameter("u, v", "array-like (2D, float64)", "The estimated flows in the horizontal and vertical directions (respectively), which should have dimensions matching those of ``image1``, ``image2`` and ``image3``.")
+    .add_parameter("u, v", "array-like (2D, float64)", "The estimated flows in the horizontal and vertical directions (respectively), which should have dimensions matching those of this functor.")
     .add_return("error", "array (2D, float)", "The evaluated brightness error."
     )
     ;
