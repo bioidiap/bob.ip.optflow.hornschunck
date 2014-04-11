@@ -16,6 +16,7 @@
 
 extern PyTypeObject PyBobIpOptflowHornAndSchunck_Type;
 extern PyTypeObject PyBobIpOptflowVanillaHornAndSchunck_Type;
+extern PyTypeObject PyBobIpOptflowForwardGradient_Type;
 
 static auto s_laplacian_avg_hs = xbob::extension::FunctionDoc(
     "laplacian_avg_hs",
@@ -345,6 +346,9 @@ static PyObject* create_module (void) {
   PyBobIpOptflowVanillaHornAndSchunck_Type.tp_new = PyType_GenericNew;
   if (PyType_Ready(&PyBobIpOptflowVanillaHornAndSchunck_Type) < 0) return 0;
 
+  PyBobIpOptflowForwardGradient_Type.tp_new = PyType_GenericNew;
+  if (PyType_Ready(&PyBobIpOptflowForwardGradient_Type) < 0) return 0;
+
 # if PY_VERSION_HEX >= 0x03000000
   PyObject* m = PyModule_Create(&module_definition);
 # else
@@ -364,6 +368,10 @@ static PyObject* create_module (void) {
   Py_INCREF(&PyBobIpOptflowVanillaHornAndSchunck_Type);
   if (PyModule_AddObject(m, "VanillaFlow",
         (PyObject *)&PyBobIpOptflowVanillaHornAndSchunck_Type) < 0) return 0;
+
+  Py_INCREF(&PyBobIpOptflowForwardGradient_Type);
+  if (PyModule_AddObject(m, "ForwardGradient",
+        (PyObject *)&PyBobIpOptflowForwardGradient_Type) < 0) return 0;
 
   /* imports xbob.blitz C-API + dependencies */
   if (import_xbob_blitz() < 0) return 0;
