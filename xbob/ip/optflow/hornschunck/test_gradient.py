@@ -20,7 +20,7 @@ def make_image_pair_1():
   1 1    1 2
 
   """
-  im1 = numpy.ones((2,2), 'uint8')
+  im1 = numpy.ones((2,2), 'float64')
   im2 = im1.copy()
   im2[1,1] = 2
   return im1, im2
@@ -35,9 +35,9 @@ def make_image_pair_2():
   10 10 10 10 10    10 10 10 10 10
 
   """
-  im1 = 10 * numpy.ones((5,5), 'uint8')
+  im1 = 10 * numpy.ones((5,5), 'float64')
   im1[1:3, 1:] = 5
-  im2 = 10 * numpy.ones((5,5), 'uint8')
+  im2 = 10 * numpy.ones((5,5), 'float64')
   im2[2:4, 2:] = 5
   return im1, im2
 
@@ -51,11 +51,11 @@ def make_image_tripplet_1():
   10 10 10 10 10    10 10 10 10 10    10 10 10  5  5
 
   """
-  im1 = 10* numpy.ones((5,5), 'uint8')
+  im1 = 10* numpy.ones((5,5), 'float64')
   im1[1:3, 1:] = 5
-  im2 = 10* numpy.ones((5,5), 'uint8')
+  im2 = 10* numpy.ones((5,5), 'float64')
   im2[2:4, 2:] = 5
-  im3 = 10* numpy.ones((5,5), 'uint8')
+  im3 = 10* numpy.ones((5,5), 'float64')
   im3[3:, 3:] = 5
   return im1, im2, im3
 

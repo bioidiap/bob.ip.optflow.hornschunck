@@ -173,7 +173,7 @@ static int PyBobIpOptflowVanillaHornAndSchunck_setShape (PyBobIpOptflowVanillaHo
   Py_ssize_t height = 0;
   Py_ssize_t width = 0;
 
-  if (!PyArg_Parse(o, "nn", &height, &width)) return -1;
+  if (!PyArg_ParseTuple(o, "nn", &height, &width)) return -1;
 
   try {
     blitz::TinyVector<int,2> shape;

@@ -53,6 +53,7 @@ setup(
           "xbob/ip/optflow/hornschunck/SpatioTemporalGradient.cpp",
           "xbob/ip/optflow/hornschunck/HornAndSchunckFlow.cpp",
           "xbob/ip/optflow/hornschunck/forward.cpp",
+          "xbob/ip/optflow/hornschunck/central.cpp",
           "xbob/ip/optflow/hornschunck/vanilla.cpp",
           "xbob/ip/optflow/hornschunck/flow.cpp",
           "xbob/ip/optflow/hornschunck/main.cpp",
