@@ -45,7 +45,7 @@
 .. _matplotlib: http://matplotlib.sourceforge.net
 .. _numpy: http://numpy.scipy.org
 .. _nose: http://nose.readthedocs.org
-.. _opencv: http://opencv.willowgarage.com/
+.. _opencv: http://opencv.org/
 .. _pil: http://www.pythonware.com/products/pil/
 .. _pillow: https://pypi.python.org/pypi/Pillow/
 .. _python: http://www.python.org
