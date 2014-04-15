@@ -262,7 +262,7 @@ static PyObject* PyBobIpOptflowHornAndSchunck_estimate
     return 0;
   }
 
-  if (v) { //&& u
+  if (u) { //&& v
 
     if (u->type_num != NPY_FLOAT64 || u->ndim != 2) {
       PyErr_Format(PyExc_TypeError, "`%s' only supports 2D 64-bit float arrays for (optional) input array `u'", Py_TYPE(self)->tp_name);
@@ -319,6 +319,9 @@ static PyObject* PyBobIpOptflowHornAndSchunck_estimate
     PyErr_Format(PyExc_RuntimeError, "%s cannot estimate flow: unknown exception caught", Py_TYPE(self)->tp_name);
     return 0;
   }
+
+  Py_INCREF(u);
+  Py_INCREF(v);
 
   return Py_BuildValue("(OO)",
     PyBlitzArray_NUMPY_WRAP(reinterpret_cast<PyObject*>(u)),
