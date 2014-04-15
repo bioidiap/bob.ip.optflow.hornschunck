@@ -254,6 +254,7 @@ static PyObject* PyBobIpOptflowVanillaHornAndSchunck_estimate
     "image2",
     "u",
     "v",
+    0
     };
   static char** kwlist = const_cast<char**>(const_kwlist);
 
@@ -392,6 +393,7 @@ static PyObject* PyBobIpOptflowVanillaHornAndSchunck_eval_ec2
   static const char* const_kwlist[] = {
     "u",
     "v",
+    0
     };
   static char** kwlist = const_cast<char**>(const_kwlist);
 
@@ -477,18 +479,16 @@ static PyObject* PyBobIpOptflowVanillaHornAndSchunck_eval_eb
     "image2",
     "u",
     "v",
+    0
     };
   static char** kwlist = const_cast<char**>(const_kwlist);
 
-  double alpha;
-  Py_ssize_t iterations;
   PyBlitzArrayObject* image1 = 0;
   PyBlitzArrayObject* image2 = 0;
   PyBlitzArrayObject* u = 0;
   PyBlitzArrayObject* v = 0;
 
   if (!PyArg_ParseTupleAndKeywords(args, kwds, "O&O&O&O&", kwlist,
-        &alpha, &iterations,
         &PyBlitzArray_Converter, &image1,
         &PyBlitzArray_Converter, &image2,
         &PyBlitzArray_Converter, &u,

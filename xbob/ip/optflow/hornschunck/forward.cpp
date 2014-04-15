@@ -341,11 +341,10 @@ static PyObject* PyBobIpOptflowForwardGradient_evaluate
     "ex",
     "ey",
     "et",
+    0
     };
   static char** kwlist = const_cast<char**>(const_kwlist);
 
-  double alpha;
-  Py_ssize_t iterations;
   PyBlitzArrayObject* image1 = 0;
   PyBlitzArrayObject* image2 = 0;
   PyBlitzArrayObject* ex = 0;
@@ -353,7 +352,6 @@ static PyObject* PyBobIpOptflowForwardGradient_evaluate
   PyBlitzArrayObject* et = 0;
 
   if (!PyArg_ParseTupleAndKeywords(args, kwds, "O&O&|O&O&O&", kwlist,
-        &alpha, &iterations,
         &PyBlitzArray_Converter, &image1,
         &PyBlitzArray_Converter, &image2,
         &PyBlitzArray_OutputConverter, &ex,

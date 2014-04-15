@@ -44,7 +44,7 @@ def make_image_tripplet():
 
 def HornAndSchunckFlowPython(alpha, im1, im2, im3, u0, v0):
   """Calculates the H&S flow in pure python"""
-  grad = Gradient(im1.shape)
+  grad = HornAndSchunckGradient(im1.shape)
   ex, ey, et = grad(im1, im2)
   u = laplacian_avg_hs(u0)
   v = laplacian_avg_hs(v0)
