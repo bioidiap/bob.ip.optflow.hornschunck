@@ -416,7 +416,7 @@ static auto s_eval_eb = xbob::extension::FunctionDoc(
     "eval_eb",
     "Calculates the brightness error (:math:`E_b`) as defined in the paper: :math:`E_b = (E_x u + E_y v + E_t)`"
     )
-    .add_prototype("image1, image2, image3, u, v")
+    .add_prototype("image1, image2, image3, u, v", "error")
     .add_parameter("image1, image2, image3", "array-like (2D, float64)",
       "Sequence of images the flow was estimated with")
     .add_parameter("u, v", "array-like (2D, float64)", "The estimated flows in the horizontal and vertical directions (respectively), which should have dimensions matching those of this functor.")
