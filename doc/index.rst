@@ -35,8 +35,7 @@ The implementation is purely based on `Bob`_::
     }
 
 This package also provides a unit testing framework, to check on the accuracy
-of results produced in different platforms. The testing framework also requires
-`OpenCV`_ for comparison purposes.
+of results produced in different platforms.
 
 Documentation
 -------------
