@@ -578,7 +578,7 @@ static auto s_hs = xbob::extension::ClassDoc(
           "\n"
           "The difference kernel for this operator is fixed to "
           ":math:`[+1/4; -1/4]`. The averaging kernel is fixed to "
-          ".math:`[+1; +1]`.\n"
+          ":math:`[+1; +1]`.\n"
           "\n"
           )
         .add_prototype("(height, width)", "")

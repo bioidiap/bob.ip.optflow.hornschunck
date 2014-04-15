@@ -20,6 +20,8 @@ extern PyTypeObject PyBobIpOptflowForwardGradient_Type;
 extern PyTypeObject PyBobIpOptflowHornAndSchunckGradient_Type;
 extern PyTypeObject PyBobIpOptflowCentralGradient_Type;
 extern PyTypeObject PyBobIpOptflowSobelGradient_Type;
+extern PyTypeObject PyBobIpOptflowPrewittGradient_Type;
+extern PyTypeObject PyBobIpOptflowIsotropicGradient_Type;
 
 static auto s_laplacian_avg_hs = xbob::extension::FunctionDoc(
     "laplacian_avg_hs",
@@ -362,6 +364,13 @@ static PyObject* create_module (void) {
   PyBobIpOptflowSobelGradient_Type.tp_base = &PyBobIpOptflowCentralGradient_Type;
   if (PyType_Ready(&PyBobIpOptflowSobelGradient_Type) < 0) return 0;
 
+  PyBobIpOptflowPrewittGradient_Type.tp_base = &PyBobIpOptflowCentralGradient_Type;
+  if (PyType_Ready(&PyBobIpOptflowPrewittGradient_Type) < 0) return 0;
+
+  PyBobIpOptflowIsotropicGradient_Type.tp_base =
+    &PyBobIpOptflowCentralGradient_Type;
+  if (PyType_Ready(&PyBobIpOptflowIsotropicGradient_Type) < 0) return 0;
+
 # if PY_VERSION_HEX >= 0x03000000
   PyObject* m = PyModule_Create(&module_definition);
 # else
@@ -397,6 +406,14 @@ static PyObject* create_module (void) {
   Py_INCREF(&PyBobIpOptflowSobelGradient_Type);
   if (PyModule_AddObject(m, "SobelGradient",
         (PyObject *)&PyBobIpOptflowSobelGradient_Type) < 0) return 0;
+
+  Py_INCREF(&PyBobIpOptflowPrewittGradient_Type);
+  if (PyModule_AddObject(m, "PrewittGradient",
+        (PyObject *)&PyBobIpOptflowPrewittGradient_Type) < 0) return 0;
+
+  Py_INCREF(&PyBobIpOptflowIsotropicGradient_Type);
+  if (PyModule_AddObject(m, "IsotropicGradient",
+        (PyObject *)&PyBobIpOptflowIsotropicGradient_Type) < 0) return 0;
 
   /* imports xbob.blitz C-API + dependencies */
   if (import_xbob_blitz() < 0) return 0;

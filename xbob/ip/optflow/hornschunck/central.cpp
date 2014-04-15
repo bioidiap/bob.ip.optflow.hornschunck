@@ -595,7 +595,7 @@ static auto s_sobel = xbob::extension::ClassDoc(
           "\n"
           "The difference kernel for this operator is fixed to "
           ":math:`[+1, 0, -1]`. The averaging kernel is fixed to "
-          ".math:`[1, 2, 1]`.\n"
+          ":math:`[1, 2, 1]`.\n"
           "\n"
           )
         .add_prototype("(height, width)", "")
@@ -686,6 +686,262 @@ PyTypeObject PyBobIpOptflowSobelGradient_Type = {
     0,                                                       /* tp_descr_set */
     0,                                                       /* tp_dictoffset */
     (initproc)PyBobIpOptflowSobelGradient_init,              /* tp_init */
+    0,                                                       /* tp_alloc */
+    0,                                                       /* tp_new */
+};
+
+#undef CLASS_NAME
+#define CLASS_NAME "PrewittGradient"
+static auto s_prewitt = xbob::extension::ClassDoc(
+    XBOB_EXT_MODULE_PREFIX "." CLASS_NAME,
+
+    "Computes the spatio-temporal gradient using a Prewitt filter",
+
+    "This class computes the spatio-temporal gradient using a 3-D prewitt "
+    "filter. The gradients are calculated along the x, y and t directions. "
+    "The Prewitt operator can be decomposed into 2 1D kernels that are applied "
+    "in sequence. Considering :math:`h'(\\cdot) = [+1, 0, -1]` and "
+    ":math:`h(\\cdot) = [1, 1, 1]` one can represent the operations like "
+    "this:\n"
+    "\n"
+    "This is equivalent to convolving the image sequence with the following "
+    "(separate) kernels:\n"
+    "\n"
+    ".. math::\n"
+    "   \n"
+    "   E_x = h'(x)h(y)h(t)\n"
+    "   E_y = h(x)h'(y)h(t)\n"
+    "   E_t = h(x)h(y)h'(t)\n"
+    "\n"
+    )
+    .add_constructor(
+        xbob::extension::FunctionDoc(
+          CLASS_NAME,
+          "Constructor",
+          "We initialize with the shape of the images we need to treat. "
+          "The shape is used by the internal buffers.\n"
+          "\n"
+          "The difference kernel for this operator is fixed to "
+          ":math:`[+1, 0, -1]`. The averaging kernel is fixed to "
+          ":math:`[1, 1, 1]`.\n"
+          "\n"
+          )
+        .add_prototype("(height, width)", "")
+        .add_parameter("(height, width)", "tuple", "the height and width of images to be fed into the the gradient estimator")
+        )
+    ;
+
+typedef struct {
+  PyBobIpOptflowCentralGradientObject parent;
+  bob::ip::optflow::PrewittGradient* cxx;
+} PyBobIpOptflowPrewittGradientObject;
+
+static int PyBobIpOptflowPrewittGradient_init
+(PyBobIpOptflowPrewittGradientObject* self, PyObject* args, PyObject* kwds) {
+
+  /* Parses input arguments in a single shot */
+  static const char* const_kwlist[] = {"shape", 0};
+  static char** kwlist = const_cast<char**>(const_kwlist);
+
+  Py_ssize_t height, width;
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "(nn)", kwlist,
+        &height, &width)) return -1;
+
+  try {
+    blitz::TinyVector<int,2> shape;
+    shape(0) = height; shape(1) = width;
+    self->cxx = new bob::ip::optflow::PrewittGradient(shape);
+  }
+  catch (std::exception& ex) {
+    PyErr_SetString(PyExc_RuntimeError, ex.what());
+    return -1;
+  }
+  catch (...) {
+    PyErr_Format(PyExc_RuntimeError, "cannot create new object of type `%s' - unknown exception thrown", Py_TYPE(self)->tp_name);
+    return -1;
+  }
+
+  self->parent.cxx = self->cxx;
+
+  return 0;
+
+}
+
+static void PyBobIpOptflowPrewittGradient_delete
+(PyBobIpOptflowPrewittGradientObject* self) {
+
+  self->parent.cxx = 0;
+  delete self->cxx;
+  Py_TYPE(&self->parent)->tp_free((PyObject*)self);
+
+}
+
+PyTypeObject PyBobIpOptflowPrewittGradient_Type = {
+    PyVarObject_HEAD_INIT(0, 0)
+    s_prewitt.name(),                                        /*tp_name*/
+    sizeof(PyBobIpOptflowPrewittGradientObject),             /*tp_basicsize*/
+    0,                                                       /*tp_itemsize*/
+    (destructor)PyBobIpOptflowPrewittGradient_delete,        /*tp_dealloc*/
+    0,                                                       /*tp_print*/
+    0,                                                       /*tp_getattr*/
+    0,                                                       /*tp_setattr*/
+    0,                                                       /*tp_compare*/
+    0,                                                       /*tp_repr*/
+    0,                                                       /*tp_as_number*/
+    0,                                                       /*tp_as_sequence*/
+    0,                                                       /*tp_as_mapping*/
+    0,                                                       /*tp_hash */
+    0,                                                       /*tp_call*/
+    0,                                                       /*tp_str*/
+    0,                                                       /*tp_getattro*/
+    0,                                                       /*tp_setattro*/
+    0,                                                       /*tp_as_buffer*/
+    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                /*tp_flags*/
+    s_prewitt.doc(),                                         /* tp_doc */
+    0,		                                                   /* tp_traverse */
+    0,		                                                   /* tp_clear */
+    0,                                                       /* tp_richcompare */
+    0,		                                                   /* tp_weaklistoffset */
+    0,		                                                   /* tp_iter */
+    0,		                                                   /* tp_iternext */
+    0,                                                       /* tp_methods */
+    0,                                                       /* tp_members */
+    0,                                                       /* tp_getset */
+    0,                                                       /* tp_base */
+    0,                                                       /* tp_dict */
+    0,                                                       /* tp_descr_get */
+    0,                                                       /* tp_descr_set */
+    0,                                                       /* tp_dictoffset */
+    (initproc)PyBobIpOptflowPrewittGradient_init,            /* tp_init */
+    0,                                                       /* tp_alloc */
+    0,                                                       /* tp_new */
+};
+
+#undef CLASS_NAME
+#define CLASS_NAME "IsotropicGradient"
+static auto s_isotropic = xbob::extension::ClassDoc(
+    XBOB_EXT_MODULE_PREFIX "." CLASS_NAME,
+
+    "Computes the spatio-temporal gradient using a Isotropic filter",
+
+    "This class computes the spatio-temporal gradient using a 3-D isotropic "
+    "filter. The gradients are calculated along the x, y and t directions. "
+    "The Isotropic operator can be decomposed into 2 1D kernels that are applied "
+    "in sequence. Considering :math:`h'(\\cdot) = [+1, 0, -1]` and "
+    ":math:`h(\\cdot) = [1, \\sqrt{2}, 1]` one can represent the operations "
+    "like this:\n"
+    "\n"
+    "This is equivalent to convolving the image sequence with the following "
+    "(separate) kernels:\n"
+    "\n"
+    ".. math::\n"
+    "   \n"
+    "   E_x = h'(x)h(y)h(t)\n"
+    "   E_y = h(x)h'(y)h(t)\n"
+    "   E_t = h(x)h(y)h'(t)\n"
+    "\n"
+    )
+    .add_constructor(
+        xbob::extension::FunctionDoc(
+          CLASS_NAME,
+          "Constructor",
+          "We initialize with the shape of the images we need to treat. "
+          "The shape is used by the internal buffers.\n"
+          "\n"
+          "The difference kernel for this operator is fixed to "
+          ":math:`[+1, 0, -1]`. The averaging kernel is fixed to "
+          ":math:`[1, \\sqrt{2}, 1]`.\n"
+          "\n"
+          )
+        .add_prototype("(height, width)", "")
+        .add_parameter("(height, width)", "tuple", "the height and width of images to be fed into the the gradient estimator")
+        )
+    ;
+
+typedef struct {
+  PyBobIpOptflowCentralGradientObject parent;
+  bob::ip::optflow::IsotropicGradient* cxx;
+} PyBobIpOptflowIsotropicGradientObject;
+
+static int PyBobIpOptflowIsotropicGradient_init
+(PyBobIpOptflowIsotropicGradientObject* self, PyObject* args, PyObject* kwds) {
+
+  /* Parses input arguments in a single shot */
+  static const char* const_kwlist[] = {"shape", 0};
+  static char** kwlist = const_cast<char**>(const_kwlist);
+
+  Py_ssize_t height, width;
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "(nn)", kwlist,
+        &height, &width)) return -1;
+
+  try {
+    blitz::TinyVector<int,2> shape;
+    shape(0) = height; shape(1) = width;
+    self->cxx = new bob::ip::optflow::IsotropicGradient(shape);
+  }
+  catch (std::exception& ex) {
+    PyErr_SetString(PyExc_RuntimeError, ex.what());
+    return -1;
+  }
+  catch (...) {
+    PyErr_Format(PyExc_RuntimeError, "cannot create new object of type `%s' - unknown exception thrown", Py_TYPE(self)->tp_name);
+    return -1;
+  }
+
+  self->parent.cxx = self->cxx;
+
+  return 0;
+
+}
+
+static void PyBobIpOptflowIsotropicGradient_delete
+(PyBobIpOptflowIsotropicGradientObject* self) {
+
+  self->parent.cxx = 0;
+  delete self->cxx;
+  Py_TYPE(&self->parent)->tp_free((PyObject*)self);
+
+}
+
+PyTypeObject PyBobIpOptflowIsotropicGradient_Type = {
+    PyVarObject_HEAD_INIT(0, 0)
+    s_isotropic.name(),                                      /*tp_name*/
+    sizeof(PyBobIpOptflowIsotropicGradientObject),           /*tp_basicsize*/
+    0,                                                       /*tp_itemsize*/
+    (destructor)PyBobIpOptflowIsotropicGradient_delete,      /*tp_dealloc*/
+    0,                                                       /*tp_print*/
+    0,                                                       /*tp_getattr*/
+    0,                                                       /*tp_setattr*/
+    0,                                                       /*tp_compare*/
+    0,                                                       /*tp_repr*/
+    0,                                                       /*tp_as_number*/
+    0,                                                       /*tp_as_sequence*/
+    0,                                                       /*tp_as_mapping*/
+    0,                                                       /*tp_hash */
+    0,                                                       /*tp_call*/
+    0,                                                       /*tp_str*/
+    0,                                                       /*tp_getattro*/
+    0,                                                       /*tp_setattro*/
+    0,                                                       /*tp_as_buffer*/
+    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                /*tp_flags*/
+    s_isotropic.doc(),                                       /* tp_doc */
+    0,		                                                   /* tp_traverse */
+    0,		                                                   /* tp_clear */
+    0,                                                       /* tp_richcompare */
+    0,		                                                   /* tp_weaklistoffset */
+    0,		                                                   /* tp_iter */
+    0,		                                                   /* tp_iternext */
+    0,                                                       /* tp_methods */
+    0,                                                       /* tp_members */
+    0,                                                       /* tp_getset */
+    0,                                                       /* tp_base */
+    0,                                                       /* tp_dict */
+    0,                                                       /* tp_descr_get */
+    0,                                                       /* tp_descr_set */
+    0,                                                       /* tp_dictoffset */
+    (initproc)PyBobIpOptflowIsotropicGradient_init,          /* tp_init */
     0,                                                       /* tp_alloc */
     0,                                                       /* tp_new */
 };
