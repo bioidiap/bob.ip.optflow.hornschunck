@@ -20,7 +20,7 @@
 
 #define CLASS_NAME "ForwardGradient"
 
-static auto s_flow = xbob::extension::ClassDoc(
+static auto s_forward = xbob::extension::ClassDoc(
     XBOB_EXT_MODULE_PREFIX "." CLASS_NAME,
 
     "Computes the spatio-temporal gradient using a 2-term approximation",
@@ -37,12 +37,11 @@ static auto s_flow = xbob::extension::ClassDoc(
           "with the kernels to be applied. The shape is used by the internal "
           "buffers.\n"
           )
-          "diff_kernel\nThe kernel that contains the difference operation. Typically, this is [1; -1]. Note the kernel is mirrored during the convolution operation. To obtain a [-1; +1] sliding operator, specify [+1; -1]. This kernel must have a size = 2.\n\n  avg_kernel\nThe kernel that contains the spatial averaging operation. This kernel is typically [+1; +1]. This kernel must have a size = 2.\n\n  shape\nThis is the shape of the images to be treated. This has to match the input image height x width specifications (in that order)."
-          )
-        .add_prototype("(difference, average, (height, width))", "")
+        .add_prototype("difference, average, (height, width)", "")
         .add_parameter("difference", "array-like, 2D float64", "The kernel that contains the difference operation. Typically, this is ``[1, -1]``. Note the kernel is mirrored during the convolution operation. To obtain a ``[-1, +1]`` sliding operator, specify ``[+1, -1]``. This kernel must have a shape = (2,).")
         .add_parameter("average", "array-like, 2D float64", "The kernel that contains the spatial averaging operation. This kernel is typically ``[+1, +1]``. This kernel must have a shape = (2,).")
         .add_parameter("(height, width)", "tuple", "the height and width of images to be fed into the the flow estimator")
+        )
     ;
 
 typedef struct {
@@ -63,6 +62,8 @@ static int PyBobIpOptflowForwardGradient_init
   Py_ssize_t height, width;
 
   if (!PyArg_ParseTupleAndKeywords(args, kwds, "O&O&(nn)", kwlist,
+        &PyBlitzArray_Converter, &diff,
+        &PyBlitzArray_Converter, &avg,
         &height, &width)) return -1;
 
   //protects acquired resources through this scope
@@ -70,12 +71,12 @@ static int PyBobIpOptflowForwardGradient_init
   auto avg_ = make_safe(avg);
 
   if (diff->type_num != NPY_FLOAT64 || diff->ndim != 1 || diff->shape[0] != 2) {
-    PyErr_Format(PyExc_TypeError, "`%s' only supports 2D 64-bit float arrays with 2 elements for input kernel `difference', but you provided a %" PY_FORMAT_SIZE_T "d array with data type = `%s' and %" PY_FORMAT_SIZE_T "d elements", Py_TYPE(self)->tp_name, diff->ndim, diff->type_num, diff->shape[0]);
+    PyErr_Format(PyExc_TypeError, "`%s' only supports 2D 64-bit float arrays with 2 elements for input kernel `difference', but you provided a %" PY_FORMAT_SIZE_T "d array with data type = `%s' and %" PY_FORMAT_SIZE_T "d elements", Py_TYPE(self)->tp_name, diff->ndim, PyBlitzArray_TypenumAsString(diff->type_num), diff->shape[0]);
     return 0;
   }
 
   if (avg->type_num != NPY_FLOAT64 || avg->ndim != 1 || avg->shape[0] != 2) {
-    PyErr_Format(PyExc_TypeError, "`%s' only supports 2D 64-bit float arrays with 2 elements for input kernel `average', but you provided a %" PY_FORMAT_SIZE_T "d array with data type = `%s' and %" PY_FORMAT_SIZE_T "d elements", Py_TYPE(self)->tp_name, avg->ndim, avg->type_num, avg->shape[0]);
+    PyErr_Format(PyExc_TypeError, "`%s' only supports 2D 64-bit float arrays with 2 elements for input kernel `average', but you provided a %" PY_FORMAT_SIZE_T "d array with data type = `%s' and %" PY_FORMAT_SIZE_T "d elements", Py_TYPE(self)->tp_name, avg->ndim, PyBlitzArray_TypenumAsString(avg->type_num), avg->shape[0]);
     return 0;
   }
 
@@ -167,7 +168,7 @@ static int PyBobIpOptflowForwardGradient_setDifference
   if (kernel->type_num != NPY_FLOAT64 ||
       kernel->ndim != 1 ||
       kernel->shape[0] != 2) {
-    PyErr_Format(PyExc_TypeError, "`%s' only supports 2D 64-bit float arrays with 2 elements for `difference' kernel, but you provided a %" PY_FORMAT_SIZE_T "d array with data type = `%s' and %" PY_FORMAT_SIZE_T "d elements", Py_TYPE(self)->tp_name, kernel->ndim, kernel->type_num, kernel->shape[0]);
+    PyErr_Format(PyExc_TypeError, "`%s' only supports 2D 64-bit float arrays with 2 elements for `difference' kernel, but you provided a %" PY_FORMAT_SIZE_T "d array with data type = `%s' and %" PY_FORMAT_SIZE_T "d elements", Py_TYPE(self)->tp_name, kernel->ndim, PyBlitzArray_TypenumAsString(kernel->type_num), kernel->shape[0]);
     return -1;
   }
 
@@ -209,7 +210,7 @@ static int PyBobIpOptflowForwardGradient_setAverage
   if (kernel->type_num != NPY_FLOAT64 ||
       kernel->ndim != 1 ||
       kernel->shape[0] != 2) {
-    PyErr_Format(PyExc_TypeError, "`%s' only supports 2D 64-bit float arrays with 2 elements for `average' kernel, but you provided a %" PY_FORMAT_SIZE_T "d array with data type = `%s' and %" PY_FORMAT_SIZE_T "d elements", Py_TYPE(self)->tp_name, kernel->ndim, kernel->type_num, kernel->shape[0]);
+    PyErr_Format(PyExc_TypeError, "`%s' only supports 2D 64-bit float arrays with 2 elements for `average' kernel, but you provided a %" PY_FORMAT_SIZE_T "d array with data type = `%s' and %" PY_FORMAT_SIZE_T "d elements", Py_TYPE(self)->tp_name, kernel->ndim, PyBlitzArray_TypenumAsString(kernel->type_num), kernel->shape[0]);
     return -1;
   }
 
@@ -331,7 +332,7 @@ static auto s_evaluate = xbob::extension::FunctionDoc(
     .add_return("ex, ey, et", "array (2D, float64)", "The evaluated gradients are returned by this function. Each matrix will have a shape that matches the input images.")
     ;
 
-static PyObject* PyBobIpOptflowForwardGradient_estimate
+static PyObject* PyBobIpOptflowForwardGradient_evaluate
 (PyBobIpOptflowForwardGradientObject* self, PyObject* args, PyObject* kwds) {
 
   static const char* const_kwlist[] = {
@@ -505,7 +506,7 @@ static PyObject* PyBobIpOptflowForwardGradient_new
 
 PyTypeObject PyBobIpOptflowForwardGradient_Type = {
     PyVarObject_HEAD_INIT(0, 0)
-    s_flow.name(),                                       /* tp_name */
+    s_forward.name(),                                    /* tp_name */
     sizeof(PyBobIpOptflowForwardGradientObject),         /* tp_basicsize */
     0,                                                   /* tp_itemsize */
     (destructor)PyBobIpOptflowForwardGradient_delete,    /* tp_dealloc */
@@ -524,7 +525,7 @@ PyTypeObject PyBobIpOptflowForwardGradient_Type = {
     0,                                                   /* tp_setattro */
     0,                                                   /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,            /* tp_flags */
-    s_flow.doc(),                                        /* tp_doc */
+    s_forward.doc(),                                     /* tp_doc */
     0,                                                   /* tp_traverse */
     0,                                                   /* tp_clear */
     0,                                                   /* tp_richcompare */
@@ -542,4 +543,130 @@ PyTypeObject PyBobIpOptflowForwardGradient_Type = {
     (initproc)PyBobIpOptflowForwardGradient_init,        /* tp_init */
     0,                                                   /* tp_alloc */
     PyBobIpOptflowForwardGradient_new,                   /* tp_new */
+};
+
+#undef CLASS_NAME
+#define CLASS_NAME "HornAndSchunckGradient"
+static auto s_hs = xbob::extension::ClassDoc(
+    XBOB_EXT_MODULE_PREFIX "." CLASS_NAME,
+
+    "Computes the spatio-temporal gradient using a 2-term approximation",
+
+    "This class computes the spatio-temporal gradient using the same "
+    "approximation as the one described by Horn & Schunck in the paper titled "
+    "'Determining Optical Flow', published in 1981, Artificial Intelligence, "
+    "* Vol. 17, No. 1-3, pp. 185-203.\n"
+    "\n"
+    "This is equivalent to convolving the image sequence with the following "
+    "(separate) kernels:\n"
+    "\n"
+    ".. math::\n"
+    "   \n"
+    "   E_x = \\frac{1}{4} ([-1,+1]^T * ([+1,+1]*i_1) + [-1,+1]^T * ([+1,+1]*i_2))\n"
+    "   E_y = \\frac{1}{4} ([+1,+1]^T * ([-1,+1]*i_1) + [+1,+1]^T * ([-1,+1]*i_2))\n"
+    "   E_t = \\frac{1}{4} ([+1,+1]^T * ([+1,+1]*i_1) - [+1,+1]^T * ([+1,+1]*i_2))\n"
+    "\n"
+    )
+    .add_constructor(
+        xbob::extension::FunctionDoc(
+          CLASS_NAME,
+          "Constructor",
+          "We initialize with the shape of the images we need to treat. "
+          "The shape is used by the internal buffers.\n"
+          "\n"
+          "The difference kernel for this operator is fixed to "
+          ":math:`[+1/4; -1/4]`. The averaging kernel is fixed to "
+          ".math:`[+1; +1]`.\n"
+          "\n"
+          )
+        .add_prototype("(height, width)", "")
+        .add_parameter("(height, width)", "tuple", "the height and width of images to be fed into the the flow estimator")
+        )
+    ;
+
+typedef struct {
+  PyBobIpOptflowForwardGradientObject parent;
+  bob::ip::optflow::HornAndSchunckGradient* cxx;
+} PyBobIpOptflowHornAndSchunckGradientObject;
+
+static int PyBobIpOptflowHornAndSchunckGradient_init
+(PyBobIpOptflowHornAndSchunckGradientObject* self, PyObject* args, PyObject* kwds) {
+
+  /* Parses input arguments in a single shot */
+  static const char* const_kwlist[] = {"shape", 0};
+  static char** kwlist = const_cast<char**>(const_kwlist);
+
+  Py_ssize_t height, width;
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "(nn)", kwlist,
+        &height, &width)) return -1;
+
+  try {
+    blitz::TinyVector<int,2> shape;
+    shape(0) = height; shape(1) = width;
+    self->cxx = new bob::ip::optflow::HornAndSchunckGradient(shape);
+  }
+  catch (std::exception& ex) {
+    PyErr_SetString(PyExc_RuntimeError, ex.what());
+    return -1;
+  }
+  catch (...) {
+    PyErr_Format(PyExc_RuntimeError, "cannot create new object of type `%s' - unknown exception thrown", Py_TYPE(self)->tp_name);
+    return -1;
+  }
+
+  self->parent.cxx = self->cxx;
+
+  return 0;
+
+}
+
+static void PyBobIpOptflowHornAndSchunckGradient_delete
+(PyBobIpOptflowHornAndSchunckGradientObject* self) {
+
+  self->parent.cxx = 0;
+  delete self->cxx;
+  Py_TYPE(&self->parent)->tp_free((PyObject*)self);
+
+}
+
+PyTypeObject PyBobIpOptflowHornAndSchunckGradient_Type = {
+    PyVarObject_HEAD_INIT(0, 0)
+    s_hs.name(),                                             /*tp_name*/
+    sizeof(PyBobIpOptflowHornAndSchunckGradientObject),      /*tp_basicsize*/
+    0,                                                       /*tp_itemsize*/
+    (destructor)PyBobIpOptflowHornAndSchunckGradient_delete, /*tp_dealloc*/
+    0,                                                       /*tp_print*/
+    0,                                                       /*tp_getattr*/
+    0,                                                       /*tp_setattr*/
+    0,                                                       /*tp_compare*/
+    0,                                                       /*tp_repr*/
+    0,                                                       /*tp_as_number*/
+    0,                                                       /*tp_as_sequence*/
+    0,                                                       /*tp_as_mapping*/
+    0,                                                       /*tp_hash */
+    0,                                                       /*tp_call*/
+    0,                                                       /*tp_str*/
+    0,                                                       /*tp_getattro*/
+    0,                                                       /*tp_setattro*/
+    0,                                                       /*tp_as_buffer*/
+    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,                /*tp_flags*/
+    s_hs.doc(),                                              /* tp_doc */
+    0,		                                                   /* tp_traverse */
+    0,		                                                   /* tp_clear */
+    0,                                                       /* tp_richcompare */
+    0,		                                                   /* tp_weaklistoffset */
+    0,		                                                   /* tp_iter */
+    0,		                                                   /* tp_iternext */
+    0,                                                       /* tp_methods */
+    0,                                                       /* tp_members */
+    0,                                                       /* tp_getset */
+    0,                                                       /* tp_base */
+    0,                                                       /* tp_dict */
+    0,                                                       /* tp_descr_get */
+    0,                                                       /* tp_descr_set */
+    0,                                                       /* tp_dictoffset */
+    (initproc)PyBobIpOptflowHornAndSchunckGradient_init,     /* tp_init */
+    0,                                                       /* tp_alloc */
+    0,                                                       /* tp_new */
 };

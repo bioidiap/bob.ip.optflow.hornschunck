@@ -64,10 +64,9 @@ namespace bob { namespace ip { namespace optflow {
       /**
        * Returns the current shape supported
        */
-      inline const blitz::TinyVector<int,2>&
-        getShape(const blitz::TinyVector<int,2>& shape) const {
-          return m_buffer1.shape();
-        }
+      inline const blitz::TinyVector<int,2>& getShape() const {
+        return m_buffer1.shape();
+      }
 
       /**
        * Re-shape internal buffers
@@ -197,10 +196,9 @@ namespace bob { namespace ip { namespace optflow {
       /**
        * Returns the current shape supported
        */
-      inline const blitz::TinyVector<int,2>&
-        getShape(const blitz::TinyVector<int,2>& shape) const {
-          return m_buffer1.shape();
-        }
+      inline const blitz::TinyVector<int,2>& getShape() const {
+        return m_buffer1.shape();
+      }
 
       /**
        * Re-shape internal buffers
