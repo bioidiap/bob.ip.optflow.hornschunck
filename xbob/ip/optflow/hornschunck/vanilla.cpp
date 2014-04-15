@@ -63,9 +63,9 @@ static auto s_flow = xbob::extension::ClassDoc(
     ".. math::\n"
     "   \n"
     "   u(n+1) = U(n) - E_x[E_x * U(n) + E_y * V(n) + E_t] /\n"
-    "                                          (\\alpha^2 + E_x^2 + E_y^2)\n"
+    "                                          (\\alpha^2 + E_x^2 + E_y^2)\\\\\n"
     "   v(n+1) = V(n) - E_y[E_y * U(n) + E_y * V(n) + E_t] /\n"
-    "                                          (\\alpha^2 + E_x^2 + E_y^2)\n"
+    "                                          (\\alpha^2 + E_x^2 + E_y^2)\\\\\n"
     "\n"
     "Where:\n"
     "\n"
@@ -461,7 +461,7 @@ static PyObject* PyBobIpOptflowVanillaHornAndSchunck_eval_ec2
 
 static auto s_eval_eb = xbob::extension::FunctionDoc(
     "eval_eb",
-    "Calculates the brightness error (:math:`E_b`) as defined in the paper: :math:`E_b = (E_x u + E_y v + E_t)"
+    "Calculates the brightness error (:math:`E_b`) as defined in the paper: :math:`E_b = (E_x u + E_y v + E_t)`"
     )
     .add_prototype("image1, image2, u, v")
     .add_parameter("image1, image2", "array-like (2D, float64)",

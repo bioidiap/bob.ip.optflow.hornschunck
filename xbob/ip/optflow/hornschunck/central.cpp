@@ -581,9 +581,9 @@ static auto s_sobel = xbob::extension::ClassDoc(
     "\n"
     ".. math::\n"
     "   \n"
-    "   E_x = h'(x)h(y)h(t)\n"
-    "   E_y = h(x)h'(y)h(t)\n"
-    "   E_t = h(x)h(y)h'(t)\n"
+    "   E_x = h'(x)h(y)h(t)\\\\\n"
+    "   E_y = h(x)h'(y)h(t)\\\\\n"
+    "   E_t = h(x)h(y)h'(t)\\\\\n"
     "\n"
     )
     .add_constructor(
@@ -709,9 +709,9 @@ static auto s_prewitt = xbob::extension::ClassDoc(
     "\n"
     ".. math::\n"
     "   \n"
-    "   E_x = h'(x)h(y)h(t)\n"
-    "   E_y = h(x)h'(y)h(t)\n"
-    "   E_t = h(x)h(y)h'(t)\n"
+    "   E_x = h'(x)h(y)h(t)\\\\\n"
+    "   E_y = h(x)h'(y)h(t)\\\\\n"
+    "   E_t = h(x)h(y)h'(t)\\\\\n"
     "\n"
     )
     .add_constructor(
@@ -837,9 +837,9 @@ static auto s_isotropic = xbob::extension::ClassDoc(
     "\n"
     ".. math::\n"
     "   \n"
-    "   E_x = h'(x)h(y)h(t)\n"
-    "   E_y = h(x)h'(y)h(t)\n"
-    "   E_t = h(x)h(y)h'(t)\n"
+    "   E_x = h'(x)h(y)h(t)\\\\\n"
+    "   E_y = h(x)h'(y)h(t)\\\\\n"
+    "   E_t = h(x)h(y)h'(t)\\\\\n"
     "\n"
     )
     .add_constructor(

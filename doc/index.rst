@@ -57,5 +57,4 @@ Indices and tables
 
 .. Place your references here:
 
-.. _opencv: http://opencv.org/
 .. _horn & schunck: https://en.wikipedia.org/wiki/Horn%E2%80%93Schunck_method
