@@ -215,7 +215,7 @@ PyObject* PyBobIpOptflowVanillaHornAndSchunck_Repr(PyBobIpOptflowVanillaHornAndS
   /**
    * Expected output:
    *
-   * <xbob.ip.optflow.hornschunck.Flow((3, 2))>
+   * <xbob.ip.optflow.hornschunck.VanillaFlow((3, 2))>
    */
 
   auto shape = make_safe(PyBobIpOptflowVanillaHornAndSchunck_getShape(self, 0));

@@ -138,12 +138,6 @@ static PyGetSetDef PyBobIpOptflowHornAndSchunck_getseters[] = {
     {0}  /* Sentinel */
 };
 
-#if PY_VERSION_HEX >= 0x03000000
-#  define PYOBJECT_STR PyObject_Str
-#else
-#  define PYOBJECT_STR PyObject_Unicode
-#endif
-
 PyObject* PyBobIpOptflowHornAndSchunck_Repr(PyBobIpOptflowHornAndSchunckObject* self) {
 
   /**
@@ -156,8 +150,17 @@ PyObject* PyBobIpOptflowHornAndSchunck_Repr(PyBobIpOptflowHornAndSchunckObject* 
   if (!shape) return 0;
   auto shape_str = make_safe(PyObject_Str(shape.get()));
 
-  return PyUnicode_FromFormat("<%s(%U)>",
+  PyObject* retval = PyUnicode_FromFormat("<%s(%U)>",
       Py_TYPE(self)->tp_name, shape_str.get());
+
+#if PYTHON_VERSION_HEX < 0x03000000
+  if (!retval) return 0;
+  PyObject* tmp = PyObject_Str(retval);
+  Py_DECREF(retval);
+  retval = tmp;
+#endif
+
+  return retval;
 
 }
 
