@@ -1,11 +1,10 @@
 /**
- * @file bob/ip/SpatioTemporalGradient.h
- * @date Tue Sep 6 17:29:53 2011 +0200
  * @author Andre Anjos <andre.anjos@idiap.ch>
+ * @date Tue Sep 6 17:29:53 2011 +0200
  *
  * @brief Implements various spatio-temporal gradients
  *
- * Copyright (C) 2011-2013 Idiap Research Institute, Martigny, Switzerland
+ * Copyright (C) 2011-2014 Idiap Research Institute, Martigny, Switzerland
  */
 
 #ifndef BOB_IP_SPATIOTEMPORALGRADIENT_H

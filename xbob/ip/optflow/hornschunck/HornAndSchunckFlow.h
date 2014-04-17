@@ -1,11 +1,10 @@
 /**
- * @file bob/ip/HornAndSchunckFlow.h
- * @date Wed Mar 16 15:01:13 2011 +0100
  * @author Andre Anjos <andre.anjos@idiap.ch>
+ * @date Wed Mar 16 15:01:13 2011 +0100
  *
  * @brief Estimates motion between two sequences of images.
  *
- * Copyright (C) 2011-2013 Idiap Research Institute, Martigny, Switzerland
+ * Copyright (C) 2011-2014 Idiap Research Institute, Martigny, Switzerland
  */
 
 #ifndef BOB_IP_HORNANDSCHUNCKFLOW_H

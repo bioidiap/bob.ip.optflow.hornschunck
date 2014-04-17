@@ -11,6 +11,10 @@ dist.Distribution(dict(setup_requires=['xbob.blitz']))
 from xbob.blitz.extension import Extension
 
 version = '2.0.0a0'
+packages = [
+    'bob-core >= 1.2.2',
+    'bob-sp >= 1.2.2',
+    ]
 
 setup(
 
@@ -46,6 +50,7 @@ setup(
         [
           "xbob/ip/optflow/hornschunck/version.cpp",
           ],
+        packages = packages,
         version = version,
         ),
       Extension("xbob.ip.optflow.hornschunck._library",
@@ -58,6 +63,7 @@ setup(
           "xbob/ip/optflow/hornschunck/flow.cpp",
           "xbob/ip/optflow/hornschunck/main.cpp",
           ],
+        packages = packages,
         version = version,
         ),
       ],
