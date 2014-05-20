@@ -40,7 +40,7 @@ setup(
     install_requires=[
       'setuptools',
       'xbob.blitz',
-      'xbob.io',
+      'xbob.io.base',
       'xbob.ip.color',
       'scipy', #for testing
     ],
