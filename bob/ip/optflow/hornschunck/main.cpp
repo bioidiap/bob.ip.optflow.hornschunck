@@ -8,9 +8,9 @@
 #ifdef NO_IMPORT_ARRAY
 #undef NO_IMPORT_ARRAY
 #endif
-#include <xbob.blitz/cppapi.h>
-#include <xbob.blitz/cleanup.h>
-#include <xbob.extension/documentation.h>
+#include <bob.blitz/cppapi.h>
+#include <bob.blitz/cleanup.h>
+#include <bob.extension/documentation.h>
 
 #include "HornAndSchunckFlow.h"
 
@@ -23,7 +23,7 @@ extern PyTypeObject PyBobIpOptflowSobelGradient_Type;
 extern PyTypeObject PyBobIpOptflowPrewittGradient_Type;
 extern PyTypeObject PyBobIpOptflowIsotropicGradient_Type;
 
-static auto s_laplacian_avg_hs = xbob::extension::FunctionDoc(
+static auto s_laplacian_avg_hs = bob::extension::FunctionDoc(
     "laplacian_avg_hs",
 
     "Filters the input image using the Laplacian (averaging) operator.",
@@ -106,7 +106,7 @@ PyObject* PyBobIpOptflowHornAndSchunck_LaplacianAverage(
 
 }
 
-static auto s_laplacian_avg_hs_opencv = xbob::extension::FunctionDoc(
+static auto s_laplacian_avg_hs_opencv = bob::extension::FunctionDoc(
     "laplacian_avg_hs_opencv",
 
     "Filters the input image using the Laplacian (averaging) operator.",
@@ -189,7 +189,7 @@ PyObject* PyBobIpOptflowHornAndSchunck_LaplacianAverageOpenCV(
 
 }
 
-static auto s_flow_error = xbob::extension::FunctionDoc(
+static auto s_flow_error = bob::extension::FunctionDoc(
     "flow_error",
 
     "Computes the generalized flow error between two images.",
@@ -335,7 +335,7 @@ PyDoc_STRVAR(module_docstr, "Optical flow framework of Horn & Schunck");
 #if PY_VERSION_HEX >= 0x03000000
 static PyModuleDef module_definition = {
   PyModuleDef_HEAD_INIT,
-  XBOB_EXT_MODULE_NAME,
+  BOB_EXT_MODULE_NAME,
   module_docstr,
   -1,
   module_methods,
@@ -374,12 +374,12 @@ static PyObject* create_module (void) {
 # if PY_VERSION_HEX >= 0x03000000
   PyObject* m = PyModule_Create(&module_definition);
 # else
-  PyObject* m = Py_InitModule3(XBOB_EXT_MODULE_NAME, module_methods, module_docstr);
+  PyObject* m = Py_InitModule3(BOB_EXT_MODULE_NAME, module_methods, module_docstr);
 # endif
   if (!m) return 0;
   auto m_ = make_safe(m); ///< protects against early returns
 
-  if (PyModule_AddStringConstant(m, "__version__", XBOB_EXT_MODULE_VERSION) < 0)
+  if (PyModule_AddStringConstant(m, "__version__", BOB_EXT_MODULE_VERSION) < 0)
     return 0;
 
   /* register the types to python */
@@ -416,9 +416,9 @@ static PyObject* create_module (void) {
         (PyObject *)&PyBobIpOptflowIsotropicGradient_Type) < 0) return 0;
 
   /* imports dependencies */
-  if (import_xbob_blitz() < 0) {
+  if (import_bob_blitz() < 0) {
     PyErr_Print();
-    PyErr_Format(PyExc_ImportError, "cannot import `%s'", XBOB_EXT_MODULE_NAME);
+    PyErr_Format(PyExc_ImportError, "cannot import `%s'", BOB_EXT_MODULE_NAME);
     return 0;
   }
 
@@ -427,7 +427,7 @@ static PyObject* create_module (void) {
 
 }
 
-PyMODINIT_FUNC XBOB_EXT_ENTRY_NAME (void) {
+PyMODINIT_FUNC BOB_EXT_ENTRY_NAME (void) {
 # if PY_VERSION_HEX >= 0x03000000
   return
 # endif

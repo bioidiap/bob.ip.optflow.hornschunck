@@ -8,7 +8,7 @@
 
 import math
 import numpy
-import xbob.ip.color
+import bob.ip.color
 
 def flow2hsv(u, v):
   """Calculates a color-coded image that represents the Optical Flow from a
@@ -39,5 +39,5 @@ def flow2hsv(u, v):
 
   # convert to rgb
   rgb = numpy.zeros(hsv.shape, 'float64')
-  xbob.ip.color.hsv_to_rgb(hsv, rgb)
+  bob.ip.color.hsv_to_rgb(hsv, rgb)
   return rgb

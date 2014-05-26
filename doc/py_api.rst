@@ -7,7 +7,7 @@
 ============
 
 This section includes information for using the pure Python API of
-``xbob.ip.optflow.hornschunck``.
+``bob.ip.optflow.hornschunck``.
 
-.. automodule:: xbob.ip.optflow.hornschunck
+.. automodule:: bob.ip.optflow.hornschunck
 

@@ -7,9 +7,9 @@
  * Copyright (C) 2011-2014 Idiap Research Institute, Martigny, Switzerland
  */
 
-#include <xbob.blitz/cppapi.h>
-#include <xbob.blitz/cleanup.h>
-#include <xbob.extension/documentation.h>
+#include <bob.blitz/cppapi.h>
+#include <bob.blitz/cleanup.h>
+#include <bob.extension/documentation.h>
 #include <structmember.h>
 
 #include "SpatioTemporalGradient.h"
@@ -20,8 +20,8 @@
 
 #define CLASS_NAME "CentralGradient"
 
-static auto s_forward = xbob::extension::ClassDoc(
-    XBOB_EXT_MODULE_PREFIX "." CLASS_NAME,
+static auto s_forward = bob::extension::ClassDoc(
+    BOB_EXT_MODULE_PREFIX "." CLASS_NAME,
 
     "Computes the spatio-temporal gradient using a 3-term approximation",
 
@@ -30,7 +30,7 @@ static auto s_forward = xbob::extension::ClassDoc(
     "term and another one for the averaging term)."
     )
     .add_constructor(
-        xbob::extension::FunctionDoc(
+        bob::extension::FunctionDoc(
           CLASS_NAME,
           "Constructor",
           "We initialize with the shape of the images we need to treat and "
@@ -109,7 +109,7 @@ static void PyBobIpOptflowCentralGradient_delete
 
 }
 
-static auto s_shape = xbob::extension::VariableDoc(
+static auto s_shape = bob::extension::VariableDoc(
     "shape",
     "tuple",
     "The shape pre-configured for this gradient estimator: ``(height, width)``"
@@ -146,7 +146,7 @@ static int PyBobIpOptflowCentralGradient_setShape (PyBobIpOptflowCentralGradient
 
 }
 
-static auto s_difference = xbob::extension::VariableDoc(
+static auto s_difference = bob::extension::VariableDoc(
     "difference",
     "array-like, 1D float64",
     "The kernel that contains the difference operation. Typically, this is ``[1, 0, -1]``. Note the kernel is mirrored during the convolution operation. To obtain a ``[-1, 0, +1]`` sliding operator, specify ``[+1, 0, -1]``. This kernel must have a shape = (3,).");
@@ -188,7 +188,7 @@ static int PyBobIpOptflowCentralGradient_setDifference
 
 }
 
-static auto s_average = xbob::extension::VariableDoc(
+static auto s_average = bob::extension::VariableDoc(
     "average",
     "array-like, 1D float64",
     "The kernel that contains the average operation. Typically, this is ``[1, -1]``. Note the kernel is mirrored during the convolution operation. To obtain a ``[-1, +1]`` sliding operator, specify ``[+1, -1]``. This kernel must have a shape = (2,).");
@@ -266,7 +266,7 @@ PyObject* PyBobIpOptflowCentralGradient_Repr(PyBobIpOptflowCentralGradientObject
   /**
    * Expected output:
    *
-   * <xbob.ip.optflow.hornschunck.CentralGradient((3, 2))>
+   * <bob.ip.optflow.hornschunck.CentralGradient((3, 2))>
    */
 
   auto shape = make_safe(PyBobIpOptflowCentralGradient_getShape(self, 0));
@@ -291,7 +291,7 @@ PyObject* PyBobIpOptflowCentralGradient_Str(PyBobIpOptflowCentralGradientObject*
   /**
    * Expected output:
    *
-   * xbob.ip.optflow.hornschunck.CentralGradient((3, 2))
+   * bob.ip.optflow.hornschunck.CentralGradient((3, 2))
    *  difference: [ -1. 1. ]
    *  average: [ 1. 1. ]
    */
@@ -321,7 +321,7 @@ PyObject* PyBobIpOptflowCentralGradient_Str(PyBobIpOptflowCentralGradientObject*
 
 }
 
-static auto s_evaluate = xbob::extension::FunctionDoc(
+static auto s_evaluate = bob::extension::FunctionDoc(
     "evaluate",
     "Evaluates the spatio-temporal gradient from the input image tripplet"
     )
@@ -564,8 +564,8 @@ PyTypeObject PyBobIpOptflowCentralGradient_Type = {
 
 #undef CLASS_NAME
 #define CLASS_NAME "SobelGradient"
-static auto s_sobel = xbob::extension::ClassDoc(
-    XBOB_EXT_MODULE_PREFIX "." CLASS_NAME,
+static auto s_sobel = bob::extension::ClassDoc(
+    BOB_EXT_MODULE_PREFIX "." CLASS_NAME,
 
     "Computes the spatio-temporal gradient using a Sobel filter",
 
@@ -587,7 +587,7 @@ static auto s_sobel = xbob::extension::ClassDoc(
     "\n"
     )
     .add_constructor(
-        xbob::extension::FunctionDoc(
+        bob::extension::FunctionDoc(
           CLASS_NAME,
           "Constructor",
           "We initialize with the shape of the images we need to treat. "
@@ -692,8 +692,8 @@ PyTypeObject PyBobIpOptflowSobelGradient_Type = {
 
 #undef CLASS_NAME
 #define CLASS_NAME "PrewittGradient"
-static auto s_prewitt = xbob::extension::ClassDoc(
-    XBOB_EXT_MODULE_PREFIX "." CLASS_NAME,
+static auto s_prewitt = bob::extension::ClassDoc(
+    BOB_EXT_MODULE_PREFIX "." CLASS_NAME,
 
     "Computes the spatio-temporal gradient using a Prewitt filter",
 
@@ -715,7 +715,7 @@ static auto s_prewitt = xbob::extension::ClassDoc(
     "\n"
     )
     .add_constructor(
-        xbob::extension::FunctionDoc(
+        bob::extension::FunctionDoc(
           CLASS_NAME,
           "Constructor",
           "We initialize with the shape of the images we need to treat. "
@@ -820,8 +820,8 @@ PyTypeObject PyBobIpOptflowPrewittGradient_Type = {
 
 #undef CLASS_NAME
 #define CLASS_NAME "IsotropicGradient"
-static auto s_isotropic = xbob::extension::ClassDoc(
-    XBOB_EXT_MODULE_PREFIX "." CLASS_NAME,
+static auto s_isotropic = bob::extension::ClassDoc(
+    BOB_EXT_MODULE_PREFIX "." CLASS_NAME,
 
     "Computes the spatio-temporal gradient using a Isotropic filter",
 
@@ -843,7 +843,7 @@ static auto s_isotropic = xbob::extension::ClassDoc(
     "\n"
     )
     .add_constructor(
-        xbob::extension::FunctionDoc(
+        bob::extension::FunctionDoc(
           CLASS_NAME,
           "Constructor",
           "We initialize with the shape of the images we need to treat. "

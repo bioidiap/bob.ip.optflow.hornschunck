@@ -7,8 +7,8 @@
 """
 
 from setuptools import setup, find_packages, dist
-dist.Distribution(dict(setup_requires=['xbob.blitz']))
-from xbob.blitz.extension import Extension
+dist.Distribution(dict(setup_requires=['bob.blitz']))
+from bob.blitz.extension import Extension
 
 version = '2.0.0a0'
 packages = [
@@ -18,50 +18,50 @@ packages = [
 
 setup(
 
-    name="xbob.ip.optflow.hornschunck",
+    name="bob.ip.optflow.hornschunck",
     version=version,
     description="Python bindings to the optical flow framework of Horn & Schunck",
     license="GPLv3",
     author='Andre Anjos',
     author_email='andre.anjos@idiap.ch',
     long_description=open('README.rst').read(),
-    url='https://github.com/bioidiap/xbob.ip.optflow.hornschunck',
+    url='https://github.com/bioidiap/bob.ip.optflow.hornschunck',
 
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
 
     namespace_packages=[
-      "xbob",
-      "xbob.ip",
-      "xbob.ip.optflow",
+      "bob",
+      "bob.ip",
+      "bob.ip.optflow",
       ],
 
     install_requires=[
       'setuptools',
-      'xbob.blitz',
-      'xbob.io.base',
-      'xbob.ip.color',
+      'bob.blitz',
+      'bob.io.base',
+      'bob.ip.color',
       'scipy', #for testing
     ],
 
     ext_modules = [
-      Extension("xbob.ip.optflow.hornschunck.version",
+      Extension("bob.ip.optflow.hornschunck.version",
         [
-          "xbob/ip/optflow/hornschunck/version.cpp",
+          "bob/ip/optflow/hornschunck/version.cpp",
           ],
         packages = packages,
         version = version,
         ),
-      Extension("xbob.ip.optflow.hornschunck._library",
+      Extension("bob.ip.optflow.hornschunck._library",
         [
-          "xbob/ip/optflow/hornschunck/SpatioTemporalGradient.cpp",
-          "xbob/ip/optflow/hornschunck/HornAndSchunckFlow.cpp",
-          "xbob/ip/optflow/hornschunck/forward.cpp",
-          "xbob/ip/optflow/hornschunck/central.cpp",
-          "xbob/ip/optflow/hornschunck/vanilla.cpp",
-          "xbob/ip/optflow/hornschunck/flow.cpp",
-          "xbob/ip/optflow/hornschunck/main.cpp",
+          "bob/ip/optflow/hornschunck/SpatioTemporalGradient.cpp",
+          "bob/ip/optflow/hornschunck/HornAndSchunckFlow.cpp",
+          "bob/ip/optflow/hornschunck/forward.cpp",
+          "bob/ip/optflow/hornschunck/central.cpp",
+          "bob/ip/optflow/hornschunck/vanilla.cpp",
+          "bob/ip/optflow/hornschunck/flow.cpp",
+          "bob/ip/optflow/hornschunck/main.cpp",
           ],
         packages = packages,
         version = version,

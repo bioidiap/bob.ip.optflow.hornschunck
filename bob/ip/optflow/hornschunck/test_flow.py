@@ -13,7 +13,7 @@ import numpy
 import nose.tools
 import pkg_resources
 
-import xbob.io
+import bob.io
 
 from . import VanillaFlow, HornAndSchunckGradient, laplacian_avg_hs
 
@@ -114,8 +114,8 @@ def test_demo():
   N = 64
   alpha = 1.1
 
-  i1 = xbob.io.load(FRAME10)
-  i2 = xbob.io.load(FRAME11)
+  i1 = bob.io.load(FRAME10)
+  i2 = bob.io.load(FRAME11)
 
   u = numpy.zeros(i1.shape, 'float64')
   v = numpy.zeros(i1.shape, 'float64')

@@ -8,20 +8,20 @@
 
 To estimate the classical Optical Flow using the original technique proposed by
 Horn & Schunck, use the functor
-:py:class:`xbob.ip.optflow.hornschunck.VanillaFlow`. In the following example,
+:py:class:`bob.ip.optflow.hornschunck.VanillaFlow`. In the following example,
 we assume you provide a pair of gray-scaled images ``i1`` and ``i2``,
 represented using a 2D :py:class:`numpy.ndarray` containing
 :py:class:`numpy.float64` elements:
 
 .. testsetup:: vanilla
 
-   from xbob.ip.optflow.hornschunck.test_gradient import make_image_pair_2
+   from bob.ip.optflow.hornschunck.test_gradient import make_image_pair_2
    i1, i2 = make_image_pair_2()
 
 .. doctest:: vanilla
   :options: +NORMALIZE_WHITESPACE, +ELLIPSIS
 
-   >>> from xbob.ip.optflow.hornschunck import VanillaFlow as Flow
+   >>> from bob.ip.optflow.hornschunck import VanillaFlow as Flow
    >>> flow  = Flow(i1.shape)
    >>> u, v = flow.estimate(alpha=200, iterations=20, image1=i1, image2=i2)
    >>> print(u)
@@ -30,17 +30,17 @@ represented using a 2D :py:class:`numpy.ndarray` containing
    [[...]]
 
 If you'd like to estimate the flow for an image, given a triplet, then use the
-:py:class:`xbob.ip.optflow.hornschunck.Flow` instead:
+:py:class:`bob.ip.optflow.hornschunck.Flow` instead:
 
 .. testsetup:: sobel
 
-   from xbob.ip.optflow.hornschunck.test_flow import make_image_tripplet
+   from bob.ip.optflow.hornschunck.test_flow import make_image_tripplet
    i1, i2, i3 = make_image_tripplet()
 
 .. doctest:: sobel
   :options: +NORMALIZE_WHITESPACE, +ELLIPSIS
 
-   >>> from xbob.ip.optflow.hornschunck import Flow
+   >>> from bob.ip.optflow.hornschunck import Flow
    >>> flow  = Flow(i1.shape)
    >>> u, v = flow.estimate(200, 20, i1, i2, i3)
    >>> print(u)

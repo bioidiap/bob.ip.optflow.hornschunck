@@ -7,9 +7,9 @@
  * Copyright (C) 2011-2014 Idiap Research Institute, Martigny, Switzerland
  */
 
-#include <xbob.blitz/cppapi.h>
-#include <xbob.blitz/cleanup.h>
-#include <xbob.extension/documentation.h>
+#include <bob.blitz/cppapi.h>
+#include <bob.blitz/cleanup.h>
+#include <bob.extension/documentation.h>
 #include <structmember.h>
 
 #include "SpatioTemporalGradient.h"
@@ -20,8 +20,8 @@
 
 #define CLASS_NAME "ForwardGradient"
 
-static auto s_forward = xbob::extension::ClassDoc(
-    XBOB_EXT_MODULE_PREFIX "." CLASS_NAME,
+static auto s_forward = bob::extension::ClassDoc(
+    BOB_EXT_MODULE_PREFIX "." CLASS_NAME,
 
     "Computes the spatio-temporal gradient using a 2-term approximation",
 
@@ -30,7 +30,7 @@ static auto s_forward = xbob::extension::ClassDoc(
     "term and another one for the averaging term)."
     )
     .add_constructor(
-        xbob::extension::FunctionDoc(
+        bob::extension::FunctionDoc(
           CLASS_NAME,
           "Constructor",
           "We initialize with the shape of the images we need to treat and "
@@ -109,7 +109,7 @@ static void PyBobIpOptflowForwardGradient_delete
 
 }
 
-static auto s_shape = xbob::extension::VariableDoc(
+static auto s_shape = bob::extension::VariableDoc(
     "shape",
     "tuple",
     "The shape pre-configured for this gradient estimator: ``(height, width)``"
@@ -146,7 +146,7 @@ static int PyBobIpOptflowForwardGradient_setShape (PyBobIpOptflowForwardGradient
 
 }
 
-static auto s_difference = xbob::extension::VariableDoc(
+static auto s_difference = bob::extension::VariableDoc(
     "difference",
     "array-like, 1D float64",
     "The kernel that contains the difference operation. Typically, this is ``[1, -1]``. Note the kernel is mirrored during the convolution operation. To obtain a ``[-1, +1]`` sliding operator, specify ``[+1, -1]``. This kernel must have a shape = (2,).");
@@ -188,7 +188,7 @@ static int PyBobIpOptflowForwardGradient_setDifference
 
 }
 
-static auto s_average = xbob::extension::VariableDoc(
+static auto s_average = bob::extension::VariableDoc(
     "average",
     "array-like, 1D float64",
     "The kernel that contains the average operation. Typically, this is ``[1, -1]``. Note the kernel is mirrored during the convolution operation. To obtain a ``[-1, +1]`` sliding operator, specify ``[+1, -1]``. This kernel must have a shape = (2,).");
@@ -266,7 +266,7 @@ PyObject* PyBobIpOptflowForwardGradient_Repr(PyBobIpOptflowForwardGradientObject
   /**
    * Expected output:
    *
-   * <xbob.ip.optflow.hornschunck.ForwardGradient((3, 2))>
+   * <bob.ip.optflow.hornschunck.ForwardGradient((3, 2))>
    */
 
   auto shape = make_safe(PyBobIpOptflowForwardGradient_getShape(self, 0));
@@ -291,7 +291,7 @@ PyObject* PyBobIpOptflowForwardGradient_Str(PyBobIpOptflowForwardGradientObject*
   /**
    * Expected output:
    *
-   * xbob.ip.optflow.hornschunck.ForwardGradient((3, 2))
+   * bob.ip.optflow.hornschunck.ForwardGradient((3, 2))
    *  difference: [ -1. 1. ]
    *  average: [ 1. 1. ]
    */
@@ -321,7 +321,7 @@ PyObject* PyBobIpOptflowForwardGradient_Str(PyBobIpOptflowForwardGradientObject*
 
 }
 
-static auto s_evaluate = xbob::extension::FunctionDoc(
+static auto s_evaluate = bob::extension::FunctionDoc(
     "evaluate",
     "Evaluates the spatio-temporal gradient from the input image pair"
     )
@@ -549,8 +549,8 @@ PyTypeObject PyBobIpOptflowForwardGradient_Type = {
 
 #undef CLASS_NAME
 #define CLASS_NAME "HornAndSchunckGradient"
-static auto s_hs = xbob::extension::ClassDoc(
-    XBOB_EXT_MODULE_PREFIX "." CLASS_NAME,
+static auto s_hs = bob::extension::ClassDoc(
+    BOB_EXT_MODULE_PREFIX "." CLASS_NAME,
 
     "Computes the spatio-temporal gradient using a 2-term approximation",
 
@@ -570,7 +570,7 @@ static auto s_hs = xbob::extension::ClassDoc(
     "\n"
     )
     .add_constructor(
-        xbob::extension::FunctionDoc(
+        bob::extension::FunctionDoc(
           CLASS_NAME,
           "Constructor",
           "We initialize with the shape of the images we need to treat. "

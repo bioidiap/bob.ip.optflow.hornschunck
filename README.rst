@@ -2,16 +2,16 @@
 .. Andre Anjos <andre.anjos@idiap.ch>
 .. Tue  1 Apr 12:32:06 2014 CEST
 
-.. image:: https://travis-ci.org/bioidiap/xbob.ip.optflow.hornschunck.svg?branch=master
-   :target: https://travis-ci.org/bioidiap/xbob.ip.optflow.hornschunck
-.. image:: https://coveralls.io/repos/bioidiap/xbob.ip.optflow.hornschunck/badge.png
-   :target: https://coveralls.io/r/bioidiap/xbob.ip.optflow.hornschunck
-.. image:: http://img.shields.io/github/tag/bioidiap/xbob.ip.optflow.hornschunck.png
-   :target: https://github.com/bioidiap/xbob.ip.optflow.hornschunck
-.. image:: http://img.shields.io/pypi/v/xbob.ip.optflow.hornschunck.png
-   :target: https://pypi.python.org/pypi/xbob.ip.optflow.hornschunck
-.. image:: http://img.shields.io/pypi/dm/xbob.ip.optflow.hornschunck.png
-   :target: https://pypi.python.org/pypi/xbob.ip.optflow.hornschunck
+.. image:: https://travis-ci.org/bioidiap/bob.ip.optflow.hornschunck.svg?branch=master
+   :target: https://travis-ci.org/bioidiap/bob.ip.optflow.hornschunck
+.. image:: https://coveralls.io/repos/bioidiap/bob.ip.optflow.hornschunck/badge.png
+   :target: https://coveralls.io/r/bioidiap/bob.ip.optflow.hornschunck
+.. image:: http://img.shields.io/github/tag/bioidiap/bob.ip.optflow.hornschunck.png
+   :target: https://github.com/bioidiap/bob.ip.optflow.hornschunck
+.. image:: http://img.shields.io/pypi/v/bob.ip.optflow.hornschunck.png
+   :target: https://pypi.python.org/pypi/bob.ip.optflow.hornschunck
+.. image:: http://img.shields.io/pypi/dm/bob.ip.optflow.hornschunck.png
+   :target: https://pypi.python.org/pypi/bob.ip.optflow.hornschunck
 
 ============================================================
  Python Bindings to Horn & Schunck's Optical Flow Framework
@@ -56,7 +56,7 @@ Testing
 
 You can run a set of tests using the nose test runner::
 
-  $ nosetests -sv xbob.ip.optflow.hornschunck
+  $ nosetests -sv bob.ip.optflow.hornschunck
 
 .. warning::
 
@@ -73,7 +73,7 @@ You can run our documentation tests using sphinx itself::
 
 You can test overall test coverage with::
 
-  $ nosetests --with-coverage --cover-package=xbob.ip.optflow.hornschunck
+  $ nosetests --with-coverage --cover-package=bob.ip.optflow.hornschunck
 
 The ``coverage`` egg must be installed for this to work properly.
 
