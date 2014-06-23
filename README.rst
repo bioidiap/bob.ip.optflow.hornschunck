@@ -4,6 +4,8 @@
 
 .. image:: https://travis-ci.org/bioidiap/bob.ip.optflow.hornschunck.svg?branch=master
    :target: https://travis-ci.org/bioidiap/bob.ip.optflow.hornschunck
+.. image:: http://img.shields.io/badge/docs-latest-orange.png
+   :target: https://www.idiap.ch/software/bob/docs/latest/bioidiap/bob.ip.optflow.hornschunck/master/index.html
 .. image:: https://coveralls.io/repos/bioidiap/bob.ip.optflow.hornschunck/badge.png
    :target: https://coveralls.io/r/bioidiap/bob.ip.optflow.hornschunck
 .. image:: http://img.shields.io/github/tag/bioidiap/bob.ip.optflow.hornschunck.png
@@ -51,12 +53,24 @@ Installation
 Install it through normal means, via PyPI or use ``zc.buildout`` to bootstrap
 the package and run test units.
 
+Documentation
+-------------
+
+The latest version of the documentation can be found `here <https://www.idiap.ch/software/bob/docs/latest/bioidiap/bob.ip.optflow.hornschunck/master/index.html>`_.
+
+Otherwise, you can generate the documentation for this package yourself, after installation, using Sphinx::
+
+  $ sphinx-build -b html doc sphinx
+
+This shall place in the directory ``sphinx``, the current version for the
+documentation of the package.
+
 Testing
 -------
 
 You can run a set of tests using the nose test runner::
 
-  $ nosetests -sv bob.ip.optflow.hornschunck
+  $ nosetests -sv
 
 .. warning::
 
