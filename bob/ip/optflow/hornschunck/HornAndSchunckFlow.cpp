@@ -8,9 +8,9 @@
  * Copyright (C) 2011-2013 Idiap Research Institute, Martigny, Switzerland
  */
 
-#include <bob/core/assert.h>
-#include <bob/sp/conv.h>
-#include <bob/sp/extrapolate.h>
+#include <bob.core/assert.h>
+#include <bob.sp/conv.h>
+#include <bob.sp/extrapolate.h>
 
 #include "HornAndSchunckFlow.h"
 

@@ -6,15 +6,13 @@
 """Bindings for Liu's optical flow
 """
 
+bob_packages = ['bob.core', 'bob.io.base', 'bob.sp', 'bob.ip.color']
+
 from setuptools import setup, find_packages, dist
-dist.Distribution(dict(setup_requires=['bob.blitz']))
+dist.Distribution(dict(setup_requires=['bob.blitz'] + bob_packages))
 from bob.blitz.extension import Extension
 
 version = '2.0.0a0'
-packages = [
-    'bob-core >= 1.2.2',
-    'bob-sp >= 1.2.2',
-    ]
 
 setup(
 
@@ -35,7 +33,7 @@ setup(
       "bob",
       "bob.ip",
       "bob.ip.optflow",
-      ],
+    ],
 
     install_requires=[
       'setuptools',
@@ -49,8 +47,8 @@ setup(
       Extension("bob.ip.optflow.hornschunck.version",
         [
           "bob/ip/optflow/hornschunck/version.cpp",
-          ],
-        packages = packages,
+        ],
+        bob_packages = bob_packages,
         version = version,
         ),
       Extension("bob.ip.optflow.hornschunck._library",
@@ -62,11 +60,11 @@ setup(
           "bob/ip/optflow/hornschunck/vanilla.cpp",
           "bob/ip/optflow/hornschunck/flow.cpp",
           "bob/ip/optflow/hornschunck/main.cpp",
-          ],
-        packages = packages,
+        ],
+        bob_packages = bob_packages,
         version = version,
-        ),
-      ],
+      ),
+    ],
 
     classifiers = [
       'Development Status :: 4 - Beta',

@@ -10,9 +10,9 @@
  */
 
 #include <cmath>
-#include <bob/sp/extrapolate.h>
-#include <bob/sp/conv.h>
-#include <bob/core/assert.h>
+#include <bob.sp/extrapolate.h>
+#include <bob.sp/conv.h>
+#include <bob.core/assert.h>
 
 #include "SpatioTemporalGradient.h"
 
