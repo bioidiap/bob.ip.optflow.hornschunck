@@ -19,9 +19,7 @@
 #include <boost/format.hpp>
 
 #include <bob.core/config.h>
-#include <bob.io.base/config.h>
 #include <bob.sp/config.h>
-#include <bob.ip.color/config.h>
 
 
 static int dict_set(PyObject* d, const char* key, const char* value) {
@@ -105,24 +103,10 @@ static PyObject* bob_core_version() {
 }
 
 /**
- * bob.io.base c/c++ api version
- */
-static PyObject* bob_io_base_version() {
-  return Py_BuildValue("{ss}", "api", BOOST_PP_STRINGIZE(BOB_IO_BASE_API_VERSION));
-}
-
-/**
  * bob.sp c/c++ api version
  */
 static PyObject* bob_sp_version() {
   return Py_BuildValue("{ss}", "api", BOOST_PP_STRINGIZE(BOB_SP_API_VERSION));
-}
-
-/**
- * bob.ip.color c/c++ api version
- */
-static PyObject* bob_ip_color_version() {
-  return Py_BuildValue("{ss}", "api", BOOST_PP_STRINGIZE(BOB_IP_COLOR_API_VERSION));
 }
 
 static PyObject* build_version_dictionary() {
@@ -131,7 +115,6 @@ static PyObject* build_version_dictionary() {
   if (!retval) return 0;
   auto retval_ = make_safe(retval);
 
-  if (!dict_steal(retval, "Bob", bob_core_version())) return 0;
   if (!dict_set(retval, "Blitz++", BZ_VERSION)) return 0;
   if (!dict_steal(retval, "Boost", boost_version())) return 0;
   if (!dict_steal(retval, "Compiler", compiler_version())) return 0;
@@ -139,9 +122,7 @@ static PyObject* build_version_dictionary() {
   if (!dict_steal(retval, "NumPy", numpy_version())) return 0;
   if (!dict_steal(retval, "bob.blitz", bob_blitz_version())) return 0;
   if (!dict_steal(retval, "bob.core", bob_core_version())) return 0;
-  if (!dict_steal(retval, "bob.io.base", bob_io_base_version())) return 0;
   if (!dict_steal(retval, "bob.sp", bob_sp_version())) return 0;
-  if (!dict_steal(retval, "bob.ip.color", bob_ip_color_version())) return 0;
 
   Py_INCREF(retval);
   return retval;

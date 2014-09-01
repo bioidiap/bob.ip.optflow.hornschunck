@@ -6,7 +6,7 @@
 """Bindings for Liu's optical flow
 """
 
-bob_packages = ['bob.core', 'bob.io.base', 'bob.sp', 'bob.ip.color']
+bob_packages = ['bob.core', 'bob.sp']
 
 from setuptools import setup, find_packages, dist
 dist.Distribution(dict(setup_requires=['bob.blitz'] + bob_packages))
@@ -38,8 +38,9 @@ setup(
     install_requires=[
       'setuptools',
       'bob.blitz',
-      'bob.io.base',
-      'bob.ip.color',
+      'bob.core',
+      'bob.sp',
+      'bob.ip.color', # for testing; requires bob.io.base
       'scipy', #for testing
     ],
 

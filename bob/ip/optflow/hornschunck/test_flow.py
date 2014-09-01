@@ -13,7 +13,6 @@ import numpy
 import nose.tools
 import pkg_resources
 
-import bob.io
 
 from . import VanillaFlow, HornAndSchunckGradient, laplacian_avg_hs
 
@@ -108,14 +107,17 @@ def test_synthetic():
   assert  numpy.allclose(u_cxx, u_py, atol=1e-15)
   assert  numpy.allclose(v_cxx, v_py, atol=1e-15)
 
+
+#TODO: When enabaling this test, import bob.io.base and bob.io.image
+#TODO: This includes making this package dependent on bob.io.base and bob.io.image
 @nose.tools.nottest
 def test_demo():
 
   N = 64
   alpha = 1.1
 
-  i1 = bob.io.load(FRAME10)
-  i2 = bob.io.load(FRAME11)
+  i1 = bob.io.base.load(FRAME10)
+  i2 = bob.io.base.load(FRAME11)
 
   u = numpy.zeros(i1.shape, 'float64')
   v = numpy.zeros(i1.shape, 'float64')

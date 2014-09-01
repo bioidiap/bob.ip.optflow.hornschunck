@@ -1,3 +1,6 @@
+# import Libraries of other lib packages
+import bob.sp
+
 from ._library import *
 from . import version
 from .version import module as __version__
