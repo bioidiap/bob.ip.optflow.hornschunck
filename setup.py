@@ -10,7 +10,7 @@ bob_packages = ['bob.core', 'bob.sp']
 
 from setuptools import setup, find_packages, dist
 dist.Distribution(dict(setup_requires=['bob.blitz'] + bob_packages))
-from bob.blitz.extension import Extension
+from bob.blitz.extension import Extension, build_ext
 
 version = '2.0.0a0'
 
@@ -51,7 +51,8 @@ setup(
         ],
         bob_packages = bob_packages,
         version = version,
-        ),
+      ),
+
       Extension("bob.ip.optflow.hornschunck._library",
         [
           "bob/ip/optflow/hornschunck/SpatioTemporalGradient.cpp",
@@ -66,6 +67,10 @@ setup(
         version = version,
       ),
     ],
+
+    cmdclass = {
+      'build_ext': build_ext
+    },
 
     classifiers = [
       'Development Status :: 4 - Beta',
