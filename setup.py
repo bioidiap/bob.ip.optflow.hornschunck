@@ -9,8 +9,11 @@
 bob_packages = ['bob.core', 'bob.sp']
 
 from setuptools import setup, find_packages, dist
-dist.Distribution(dict(setup_requires=['bob.blitz'] + bob_packages))
+dist.Distribution(dict(setup_requires=['bob.extension', 'bob.blitz'] + bob_packages))
 from bob.blitz.extension import Extension, build_ext
+
+from bob.extension.utils import load_requirements
+build_requires = load_requirements()
 
 version = '2.0.0a0'
 
@@ -35,14 +38,8 @@ setup(
       "bob.ip.optflow",
     ],
 
-    install_requires=[
-      'setuptools',
-      'bob.blitz',
-      'bob.core',
-      'bob.sp',
-      'bob.ip.color', # for testing; requires bob.io.base
-      'scipy', #for testing
-    ],
+    setup_requires = build_requires,
+    install_requires = build_requires,
 
     ext_modules = [
       Extension("bob.ip.optflow.hornschunck.version",
