@@ -6,8 +6,7 @@
  Python API
 ============
 
-This section includes information for using the pure Python API of
-``bob.ip.optflow.hornschunck``.
+This section includes information for using the pure Python API of ``bob.ip.optflow.hornschunck``.
 
 .. automodule:: bob.ip.optflow.hornschunck
 

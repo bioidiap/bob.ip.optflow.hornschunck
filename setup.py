@@ -3,7 +3,7 @@
 # Andre Anjos <andre.anjos@idiap.ch>
 # Thu 20 Sep 2012 14:43:19 CEST
 
-"""Bindings for Liu's optical flow
+"""Bindings for optical flow from Horn & Schunck
 """
 
 bob_packages = ['bob.core', 'bob.sp']
@@ -70,6 +70,7 @@ setup(
     },
 
     classifiers = [
+      'Framework :: Bob',
       'Development Status :: 4 - Beta',
       'Intended Audience :: Developers',
       'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
@@ -78,6 +79,6 @@ setup(
       'Programming Language :: Python :: 3',
       'Topic :: Scientific/Engineering :: Artificial Intelligence',
       'Topic :: Scientific/Engineering :: Image Recognition',
-      ],
+    ],
 
-    )
+)

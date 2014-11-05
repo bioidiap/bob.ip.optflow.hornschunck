@@ -4,38 +4,40 @@
 ..
 .. Copyright (C) 2011-2014 Idiap Research Institute, Martigny, Switzerland
 
+.. _bob.ip.optflow.hornschunck:
+
 ============================================================
  Python Bindings to Horn & Schunck's Optical Flow Framework
 ============================================================
 
 .. todolist::
 
-This package is a simple Python wrapper to an open-source Optical Flow
-estimator based on the works by `Horn & Schunck`_::
+This package is a simple Python wrapper to an open-source Optical Flow estimator based on the works by `Horn & Schunck`_:
 
-    @article{Horn_Schunck_1981,
-      author = {B.K.P. Horn and B.G. Schunck},
-      title = {Determining optical flow},
-      year = {1981},
-      booktitle = {Artificial Intelligence},
-      volume = {17},
-      pages = {185--203},
-    }
+.. code-block:: latex
 
-The implementation is purely based on `Bob`_::
+  @article{Horn_Schunck_1981,
+    author = {Horn, B. K. P. and Schunck, B. G.},
+    title = {Determining optical flow},
+    year = {1981},
+    booktitle = {Artificial Intelligence},
+    volume = {17},
+    pages = {185--203},
+  }
 
-    @inproceedings{Anjos_ACMMM_2012,
-      author = {A. Anjos and L. El Shafey and R. Wallace and M. G\"unther and C. McCool and S. Marcel},
-      title = {Bob: a free signal processing and machine learning toolbox for researchers},
-      year = {2012},
-      month = oct,
-      booktitle = {20th ACM Conference on Multimedia Systems (ACMMM), Nara, Japan},
-      publisher = {ACM Press},
-      url = {http://publications.idiap.ch/downloads/papers/2012/Anjos_Bob_ACMMM12.pdf},
-    }
+The implementation is purely based on Bob_:
 
-This package also provides a unit testing framework, to check on the accuracy
-of results produced in different platforms.
+.. code-block:: latex
+
+  @inproceedings{Anjos_ACMMM_2012,
+    author = {Anjos, Andr\'e AND El Shafey, Laurent AND Wallace, Roy AND G\"unther, Manuel AND McCool, Christopher AND Marcel, S\'ebastien},
+    title = {Bob: a free signal processing and machine learning toolbox for researchers},
+    year = {2012},
+    month = oct,
+    booktitle = {20th ACM Conference on Multimedia Systems (ACMMM), Nara, Japan},
+    publisher = {ACM Press},
+    url = {http://publications.idiap.ch/downloads/papers/2012/Anjos_Bob_ACMMM12.pdf},
+  }
 
 Documentation
 -------------
