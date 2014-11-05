@@ -4,19 +4,19 @@
 
 
 .. image:: http://img.shields.io/badge/docs-stable-yellow.png
-   :target: http://pythonhosted.org/bob.ip.hornschunck/index.html
+   :target: http://pythonhosted.org/bob.ip.optflow.hornschunck/index.html
 .. image:: http://img.shields.io/badge/docs-latest-orange.png
-   :target: https://www.idiap.ch/software/bob/docs/latest/bioidiap/bob.ip.hornschunck/master/index.html
-.. image:: https://travis-ci.org/bioidiap/bob.ip.hornschunck.svg?branch=master
-   :target: https://travis-ci.org/bioidiap/bob.ip.hornschunck
-.. image:: https://coveralls.io/repos/bioidiap/bob.ip.hornschunck/badge.png
-   :target: https://coveralls.io/r/bioidiap/bob.ip.hornschunck
+   :target: https://www.idiap.ch/software/bob/docs/latest/bioidiap/bob.ip.optflow.hornschunck/master/index.html
+.. image:: https://travis-ci.org/bioidiap/bob.ip.optflow.hornschunck.svg?branch=master
+   :target: https://travis-ci.org/bioidiap/bob.ip.optflow.hornschunck
+.. image:: https://coveralls.io/repos/bioidiap/bob.ip.optflow.hornschunck/badge.png
+   :target: https://coveralls.io/r/bioidiap/bob.ip.optflow.hornschunck
 .. image:: https://img.shields.io/badge/github-master-0000c0.png
-   :target: https://github.com/bioidiap/bob.ip.hornschunck/tree/master
-.. image:: http://img.shields.io/pypi/v/bob.ip.hornschunck.png
-   :target: https://pypi.python.org/pypi/bob.ip.hornschunck
-.. image:: http://img.shields.io/pypi/dm/bob.ip.hornschunck.png
-   :target: https://pypi.python.org/pypi/bob.ip.hornschunck
+   :target: https://github.com/bioidiap/bob.ip.optflow.hornschunck/tree/master
+.. image:: http://img.shields.io/pypi/v/bob.ip.optflow.hornschunck.png
+   :target: https://pypi.python.org/pypi/bob.ip.optflow.hornschunck
+.. image:: http://img.shields.io/pypi/dm/bob.ip.optflow.hornschunck.png
+   :target: https://pypi.python.org/pypi/bob.ip.optflow.hornschunck
 
 ============================================================
  Python Bindings to Horn & Schunck's Optical Flow Framework
@@ -57,7 +57,7 @@ Please make sure that you have read the `Dependencies <https://github.com/idiap/
 
 Documentation
 -------------
-For further documentation on this package, please read the `Stable Version <http://pythonhosted.org/bob.ip.hornschunck/index.html>`_ or the `Latest Version <https://www.idiap.ch/software/bob/docs/latest/bioidiap/bob.ip.hornschunck/master/index.html>`_ of the documentation.
+For further documentation on this package, please read the `Stable Version <http://pythonhosted.org/bob.ip.optflow.hornschunck/index.html>`_ or the `Latest Version <https://www.idiap.ch/software/bob/docs/latest/bioidiap/bob.ip.optflow.hornschunck/master/index.html>`_ of the documentation.
 For a list of tutorials on this or the other packages ob Bob_, or information on submitting issues, asking questions and starting discussions, please visit its website.
 
 .. _bob: https://www.idiap.ch/software/bob
