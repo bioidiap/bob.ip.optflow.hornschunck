@@ -7,7 +7,7 @@
    :target: http://pythonhosted.org/bob.ip.optflow.hornschunck/index.html
 .. image:: http://img.shields.io/badge/docs-latest-orange.png
    :target: https://www.idiap.ch/software/bob/docs/latest/bioidiap/bob.ip.optflow.hornschunck/master/index.html
-.. image:: https://travis-ci.org/bioidiap/bob.ip.optflow.hornschunck.svg?branch=v2.0.1
+.. image:: https://travis-ci.org/bioidiap/bob.ip.optflow.hornschunck.svg?branch=master
    :target: https://travis-ci.org/bioidiap/bob.ip.optflow.hornschunck
 .. image:: https://coveralls.io/repos/bioidiap/bob.ip.optflow.hornschunck/badge.png
    :target: https://coveralls.io/r/bioidiap/bob.ip.optflow.hornschunck
