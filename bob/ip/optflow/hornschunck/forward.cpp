@@ -471,14 +471,10 @@ static PyObject* PyBobIpOptflowForwardGradient_evaluate
     return 0;
   }
 
-  Py_INCREF(ex);
-  Py_INCREF(ey);
-  Py_INCREF(et);
-
-  return Py_BuildValue("(OOO)",
-    PyBlitzArray_NUMPY_WRAP(reinterpret_cast<PyObject*>(ex)),
-    PyBlitzArray_NUMPY_WRAP(reinterpret_cast<PyObject*>(ey)),
-    PyBlitzArray_NUMPY_WRAP(reinterpret_cast<PyObject*>(et))
+  return Py_BuildValue("(NNN)",
+    PyBlitzArray_NUMPY_WRAP(Py_BuildValue("O", ex)),
+    PyBlitzArray_NUMPY_WRAP(Py_BuildValue("O", ey)),
+    PyBlitzArray_NUMPY_WRAP(Py_BuildValue("O", et))
     );
 
 }

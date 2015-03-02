@@ -370,12 +370,9 @@ static PyObject* PyBobIpOptflowVanillaHornAndSchunck_estimate
     return 0;
   }
 
-  Py_INCREF(u);
-  Py_INCREF(v);
-
-  return Py_BuildValue("(OO)",
-    PyBlitzArray_NUMPY_WRAP(reinterpret_cast<PyObject*>(u)),
-    PyBlitzArray_NUMPY_WRAP(reinterpret_cast<PyObject*>(v))
+  return Py_BuildValue("(NN)",
+    PyBlitzArray_NUMPY_WRAP(Py_BuildValue("O", u)),
+    PyBlitzArray_NUMPY_WRAP(Py_BuildValue("O", v))
     );
 
 }
