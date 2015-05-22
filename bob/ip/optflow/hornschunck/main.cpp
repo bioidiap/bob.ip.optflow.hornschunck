@@ -10,6 +10,8 @@
 #endif
 #include <bob.blitz/cppapi.h>
 #include <bob.blitz/cleanup.h>
+#include <bob.core/api.h>
+#include <bob.sp/api.h>
 #include <bob.extension/documentation.h>
 
 #include "HornAndSchunckFlow.h"
@@ -379,9 +381,6 @@ static PyObject* create_module (void) {
   if (!m) return 0;
   auto m_ = make_safe(m); ///< protects against early returns
 
-  if (PyModule_AddStringConstant(m, "__version__", BOB_EXT_MODULE_VERSION) < 0)
-    return 0;
-
   /* register the types to python */
   Py_INCREF(&PyBobIpOptflowHornAndSchunck_Type);
   if (PyModule_AddObject(m, "Flow",
@@ -416,15 +415,11 @@ static PyObject* create_module (void) {
         (PyObject *)&PyBobIpOptflowIsotropicGradient_Type) < 0) return 0;
 
   /* imports dependencies */
-  if (import_bob_blitz() < 0) {
-    PyErr_Print();
-    PyErr_Format(PyExc_ImportError, "cannot import `%s'", BOB_EXT_MODULE_NAME);
-    return 0;
-  }
+  if (import_bob_blitz() < 0) return 0;
+  if (import_bob_core_logging() < 0) return 0;
+  if (import_bob_sp() < 0) return 0;
 
-  Py_INCREF(m);
-  return m;
-
+  return Py_BuildValue("O", m);
 }
 
 PyMODINIT_FUNC BOB_EXT_ENTRY_NAME (void) {
