@@ -11,8 +11,8 @@ In the following example, we assume you provide a pair of gray-scaled images ``i
 
 .. testsetup:: vanilla
 
-   from bob.ip.optflow.hornschunck.test_gradient import make_image_pair_2
-   i1, i2 = make_image_pair_2()
+  import bob.ip.optflow.hornschunck.test_gradient
+  i1, i2 = bob.ip.optflow.hornschunck.test_gradient.make_image_pair_2()
 
 .. doctest:: vanilla
   :options: +NORMALIZE_WHITESPACE, +ELLIPSIS
@@ -29,8 +29,8 @@ If you'd like to estimate the flow for an image, given a triplet, then use the :
 
 .. testsetup:: sobel
 
-   from bob.ip.optflow.hornschunck.test_flow import make_image_tripplet
-   i1, i2, i3 = make_image_tripplet()
+   import bob.ip.optflow.hornschunck.test_flow
+   i1, i2, i3 = bob.ip.optflow.hornschunck.test_flow.make_image_tripplet()
 
 .. doctest:: sobel
   :options: +NORMALIZE_WHITESPACE, +ELLIPSIS
