@@ -61,7 +61,7 @@ static PyObject* create_module (void) {
   if (!module) return 0;
 
   /* register version numbers and constants */
-  if (PyModule_AddStringConstant(m, "module", BOB_EXT_MODULE_VERSION) < 0) return 0;
+  if (PyModule_AddStringConstant(module, "module", BOB_EXT_MODULE_VERSION) < 0) return 0;
 
   PyObject* externals = build_version_dictionary();
   if (!externals) return 0;
