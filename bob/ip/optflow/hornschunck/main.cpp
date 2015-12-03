@@ -374,44 +374,46 @@ static PyObject* create_module (void) {
   if (PyType_Ready(&PyBobIpOptflowIsotropicGradient_Type) < 0) return 0;
 
 # if PY_VERSION_HEX >= 0x03000000
-  PyObject* m = PyModule_Create(&module_definition);
+  PyObject* module = PyModule_Create(&module_definition);
+  auto module_ = make_xsafe(module);
+  const char* ret = "O";
 # else
-  PyObject* m = Py_InitModule3(BOB_EXT_MODULE_NAME, module_methods, module_docstr);
+  PyObject* module = Py_InitModule3(BOB_EXT_MODULE_NAME, module_methods, module_docstr);
+  const char* ret = "N";
 # endif
-  if (!m) return 0;
-  auto m_ = make_safe(m); ///< protects against early returns
+  if (!module) return 0;
 
   /* register the types to python */
   Py_INCREF(&PyBobIpOptflowHornAndSchunck_Type);
-  if (PyModule_AddObject(m, "Flow",
+  if (PyModule_AddObject(module, "Flow",
         (PyObject *)&PyBobIpOptflowHornAndSchunck_Type) < 0) return 0;
 
   Py_INCREF(&PyBobIpOptflowVanillaHornAndSchunck_Type);
-  if (PyModule_AddObject(m, "VanillaFlow",
+  if (PyModule_AddObject(module, "VanillaFlow",
         (PyObject *)&PyBobIpOptflowVanillaHornAndSchunck_Type) < 0) return 0;
 
   Py_INCREF(&PyBobIpOptflowForwardGradient_Type);
-  if (PyModule_AddObject(m, "ForwardGradient",
+  if (PyModule_AddObject(module, "ForwardGradient",
         (PyObject *)&PyBobIpOptflowForwardGradient_Type) < 0) return 0;
 
   Py_INCREF(&PyBobIpOptflowHornAndSchunckGradient_Type);
-  if (PyModule_AddObject(m, "HornAndSchunckGradient",
+  if (PyModule_AddObject(module, "HornAndSchunckGradient",
         (PyObject *)&PyBobIpOptflowHornAndSchunckGradient_Type) < 0) return 0;
 
   Py_INCREF(&PyBobIpOptflowCentralGradient_Type);
-  if (PyModule_AddObject(m, "CentralGradient",
+  if (PyModule_AddObject(module, "CentralGradient",
         (PyObject *)&PyBobIpOptflowCentralGradient_Type) < 0) return 0;
 
   Py_INCREF(&PyBobIpOptflowSobelGradient_Type);
-  if (PyModule_AddObject(m, "SobelGradient",
+  if (PyModule_AddObject(module, "SobelGradient",
         (PyObject *)&PyBobIpOptflowSobelGradient_Type) < 0) return 0;
 
   Py_INCREF(&PyBobIpOptflowPrewittGradient_Type);
-  if (PyModule_AddObject(m, "PrewittGradient",
+  if (PyModule_AddObject(module, "PrewittGradient",
         (PyObject *)&PyBobIpOptflowPrewittGradient_Type) < 0) return 0;
 
   Py_INCREF(&PyBobIpOptflowIsotropicGradient_Type);
-  if (PyModule_AddObject(m, "IsotropicGradient",
+  if (PyModule_AddObject(module, "IsotropicGradient",
         (PyObject *)&PyBobIpOptflowIsotropicGradient_Type) < 0) return 0;
 
   /* imports dependencies */
@@ -419,7 +421,7 @@ static PyObject* create_module (void) {
   if (import_bob_core_logging() < 0) return 0;
   if (import_bob_sp() < 0) return 0;
 
-  return Py_BuildValue("O", m);
+  return Py_BuildValue(ret, module);
 }
 
 PyMODINIT_FUNC BOB_EXT_ENTRY_NAME (void) {
