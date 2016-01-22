@@ -9,7 +9,7 @@
    :target: https://www.idiap.ch/software/bob/docs/latest/bioidiap/bob.ip.optflow.hornschunck/master/index.html
 .. image:: https://travis-ci.org/bioidiap/bob.ip.optflow.hornschunck.svg?branch=master
    :target: https://travis-ci.org/bioidiap/bob.ip.optflow.hornschunck
-.. image:: https://coveralls.io/repos/bioidiap/bob.ip.optflow.hornschunck/badge.png
+.. image:: https://coveralls.io/repos/bioidiap/bob.ip.optflow.hornschunck/badge.svg?branch=master
    :target: https://coveralls.io/r/bioidiap/bob.ip.optflow.hornschunck
 .. image:: https://img.shields.io/badge/github-master-0000c0.png
    :target: https://github.com/bioidiap/bob.ip.optflow.hornschunck/tree/master
