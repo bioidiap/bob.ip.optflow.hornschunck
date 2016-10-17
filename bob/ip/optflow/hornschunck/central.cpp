@@ -111,7 +111,7 @@ static void PyBobIpOptflowCentralGradient_delete
 
 static auto s_shape = bob::extension::VariableDoc(
     "shape",
-    "tuple",
+    ":py:class:`tuple`",
     "The shape pre-configured for this gradient estimator: ``(height, width)``"
     );
 
@@ -148,8 +148,8 @@ static int PyBobIpOptflowCentralGradient_setShape (PyBobIpOptflowCentralGradient
 
 static auto s_difference = bob::extension::VariableDoc(
     "difference",
-    "array-like, 1D float64",
-    "The kernel that contains the difference operation. Typically, this is ``[1, 0, -1]``. Note the kernel is mirrored during the convolution operation. To obtain a ``[-1, 0, +1]`` sliding operator, specify ``[+1, 0, -1]``. This kernel must have a shape = (3,).");
+    ":py:class:`numpy.ndarray`",
+    "The kernel that contains the difference operation (1D array of type ``float64``). Typically, this is ``[1, 0, -1]``. Note the kernel is mirrored during the convolution operation. To obtain a ``[-1, 0, +1]`` sliding operator, specify ``[+1, 0, -1]``. This kernel must have a shape = (3,).");
 
 static PyObject* PyBobIpOptflowCentralGradient_getDifference
 (PyBobIpOptflowCentralGradientObject* self, void* /*closure*/) {
@@ -190,8 +190,8 @@ static int PyBobIpOptflowCentralGradient_setDifference
 
 static auto s_average = bob::extension::VariableDoc(
     "average",
-    "array-like, 1D float64",
-    "The kernel that contains the average operation. Typically, this is ``[1, -1]``. Note the kernel is mirrored during the convolution operation. To obtain a ``[-1, +1]`` sliding operator, specify ``[+1, -1]``. This kernel must have a shape = (2,).");
+    ":py:class:`numpy.ndarray`",
+    "The kernel that contains the average operation (1D array of type ``float64``). Typically, this is ``[1, -1]``. Note the kernel is mirrored during the convolution operation. To obtain a ``[-1, +1]`` sliding operator, specify ``[+1, -1]``. This kernel must have a shape = (2,).");
 
 static PyObject* PyBobIpOptflowCentralGradient_getAverage
 (PyBobIpOptflowCentralGradientObject* self, void* /*closure*/) {
