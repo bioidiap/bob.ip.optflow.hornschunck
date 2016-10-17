@@ -111,7 +111,7 @@ static void PyBobIpOptflowForwardGradient_delete
 
 static auto s_shape = bob::extension::VariableDoc(
     "shape",
-    "tuple",
+    ":py:class:`tuple`",
     "The shape pre-configured for this gradient estimator: ``(height, width)``"
     );
 
@@ -148,8 +148,8 @@ static int PyBobIpOptflowForwardGradient_setShape (PyBobIpOptflowForwardGradient
 
 static auto s_difference = bob::extension::VariableDoc(
     "difference",
-    "array-like, 1D float64",
-    "The kernel that contains the difference operation. Typically, this is ``[1, -1]``. Note the kernel is mirrored during the convolution operation. To obtain a ``[-1, +1]`` sliding operator, specify ``[+1, -1]``. This kernel must have a shape = (2,).");
+    ":py:class:`numpy.ndarray`",
+    "The kernel that contains the difference operation (1D array of type ``float64``). Typically, this is ``[1, -1]``. Note the kernel is mirrored during the convolution operation. To obtain a ``[-1, +1]`` sliding operator, specify ``[+1, -1]``. This kernel must have a shape = (2,).");
 
 static PyObject* PyBobIpOptflowForwardGradient_getDifference
 (PyBobIpOptflowForwardGradientObject* self, void* /*closure*/) {
@@ -190,8 +190,8 @@ static int PyBobIpOptflowForwardGradient_setDifference
 
 static auto s_average = bob::extension::VariableDoc(
     "average",
-    "array-like, 1D float64",
-    "The kernel that contains the average operation. Typically, this is ``[1, -1]``. Note the kernel is mirrored during the convolution operation. To obtain a ``[-1, +1]`` sliding operator, specify ``[+1, -1]``. This kernel must have a shape = (2,).");
+    ":py:class:`numpy.ndarray`",
+    "The kernel that contains the average operation (1D array of type ``float64``). Typically, this is ``[1, -1]``. Note the kernel is mirrored during the convolution operation. To obtain a ``[-1, +1]`` sliding operator, specify ``[+1, -1]``. This kernel must have a shape = (2,).");
 
 static PyObject* PyBobIpOptflowForwardGradient_getAverage
 (PyBobIpOptflowForwardGradientObject* self, void* /*closure*/) {

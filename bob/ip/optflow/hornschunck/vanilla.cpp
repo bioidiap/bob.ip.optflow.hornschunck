@@ -158,7 +158,7 @@ static void PyBobIpOptflowVanillaHornAndSchunck_delete
 
 static auto s_shape = bob::extension::VariableDoc(
     "shape",
-    "tuple",
+    ":py:class:`tuple`",
     "The shape pre-configured for this flow estimator: ``(height, width)``"
     );
 

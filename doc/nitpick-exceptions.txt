@@ -1,0 +1,2 @@
+# Not correctly linked in Python 2.7 docs - works OK for Python 3.x
+py:class tuple
