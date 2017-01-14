@@ -16,7 +16,7 @@
 
 
 ==================================================================
- Implemenation of Horn & Schunck's Optical Flow Framework for Bob
+ Implementation of Horn & Schunck's Optical Flow Framework for Bob
 ==================================================================
 
 This package is part of the signal-processing and machine learning toolbox
