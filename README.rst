@@ -5,10 +5,10 @@
    :target: https://www.idiap.ch/software/bob/docs/bob/bob.ip.optflow.hornschunck/stable/index.html
 .. image:: http://img.shields.io/badge/docs-latest-orange.svg
    :target: https://www.idiap.ch/software/bob/docs/bob/bob.ip.optflow.hornschunck/master/index.html
-.. image:: https://gitlab.idiap.ch/bob/bob.ip.optflow.hornschunck/badges/v2.0.13/build.svg
-   :target: https://gitlab.idiap.ch/bob/bob.ip.optflow.hornschunck/commits/v2.0.13
-.. image:: https://gitlab.idiap.ch/bob/bob.ip.optflow.hornschunck/badges/v2.0.13/coverage.svg
-   :target: https://gitlab.idiap.ch/bob/bob.ip.optflow.hornschunck/commits/v2.0.13
+.. image:: https://gitlab.idiap.ch/bob/bob.ip.optflow.hornschunck/badges/master/build.svg
+   :target: https://gitlab.idiap.ch/bob/bob.ip.optflow.hornschunck/commits/master
+.. image:: https://gitlab.idiap.ch/bob/bob.ip.optflow.hornschunck/badges/master/coverage.svg
+   :target: https://gitlab.idiap.ch/bob/bob.ip.optflow.hornschunck/commits/master
 .. image:: https://img.shields.io/badge/gitlab-project-0000c0.svg
    :target: https://gitlab.idiap.ch/bob/bob.ip.optflow.hornschunck
 .. image:: http://img.shields.io/pypi/v/bob.ip.optflow.hornschunck.svg
