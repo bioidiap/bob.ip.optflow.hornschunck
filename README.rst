@@ -21,7 +21,7 @@
 
 This package is part of the signal-processing and machine learning toolbox
 Bob_. It contains a simple Python wrapper to an open-source Optical Flow
-estimator based on the works by `Horn & Schunck`_::
+estimator based on the works by Horn & Schunck::
 
   @article{Horn_Schunck_1981,
     author = {Horn, B. K. P. and Schunck, B. G.},
